@@ -1,4 +1,4 @@
-AC_INIT([clpAPI], [1.1.5], [geliudie@uni-duesseldorf.de])
+AC_INIT([clpAPI], [1.1.6], [geliudie@uni-duesseldorf.de])
 
 dnl # --------------------------------------------------------------------
 dnl # R compiler and flags
@@ -58,7 +58,7 @@ if test [ -n "$CLP_INCLUDE" -a -n "$CLP_LIB" ] ; then
     if test [ ! -d "$CLP_LIB" ] ; then
         AC_MSG_ERROR([directory $CLP_LIB does not exist])
     else
-        LIBS="-L${CLP_LIB} -L${CLP_LIB}/coin -Wl,-rpath ${CLP_LIB}/coin"
+        LIBS="-L${CLP_LIB} -L${CLP_LIB}/coin"
     fi
 
 else
@@ -103,7 +103,7 @@ fi
 
 LIBS="$LIBS $INCL"
 
-
+echo $LIBS
 dnl # --------------------------------------------------------------------
 dnl # CFLAGS
 dnl # --------------------------------------------------------------------
