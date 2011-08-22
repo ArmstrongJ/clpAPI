@@ -13,35 +13,19 @@
 }
 
 \details{
-    \tabular{ll}{
-        Package: \tab clpAPI\cr
-        Type: \tab Package\cr
-        Version: \tab 1.1.6\cr
-        Date: \tab 2011-07-29\cr
-        Depends: \tab R (>= 2.6.0), methods\cr
-        License: \tab GPL-3\cr
-        LazyLoad: \tab yes\cr
-    }
+  The package \code{clpAPI} provides access to the callable library
+  of COIN-OR Clp from within R.
+}
 
-    Index:
-    \preformatted{
-clpAPI-package        R Interface to C API of COIN-OR Clp
-    }
-
-The package \pkg{clpAPI} provides a low level interface to
-COIN-OR Clp (COIN Linear Program code).
-
+\references{
+   The COIN-OR Clp home page at
+   \url{http://www.coin-or.org/projects/Clp.xml}
 }
 
 \author{
   Gabriel Gelius-Dietrich
 
   Maintainer: Gabriel Gelius-Dietrich <geliudie@uni-duesseldorf.de>
-}
-
-\references{
-   The COIN-OR Clp home page at
-   \url{http://www.coin-or.org/projects/Clp.xml}
 }
 
 \keyword{ package }

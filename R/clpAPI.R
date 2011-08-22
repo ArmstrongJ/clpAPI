@@ -9,7 +9,7 @@
 #  Institute for Informatics, Heinrich-Heine-University, Duesseldorf, Germany.
 #  All right reserved.
 #  Email: geliudie@uni-duesseldorf.de
-#  
+#
 #  This file is part of clpAPI.
 #
 #  ClpAPI is free software: you can redistribute it and/or modify
@@ -64,12 +64,12 @@ setObjDirCLP <- function(lp, lpdir) {
 #------------------------------------------------------------------------------#
 
 getObjDirCLP <- function(lp) {
-    
+
     lpdir <- .Call("getObjDir", PACKAGE = "clpAPI",
                    lp
                   )
     return(lpdir)
-    
+
 }
 
 
@@ -198,12 +198,12 @@ chgObjCoefsCLP <- function(lp, objCoef) {
 #------------------------------------------------------------------------------#
 
 getObjCoefsCLP <- function(lp) {
-    
+
     objCoefs <- .Call("getObjCoefs", PACKAGE = "clpAPI",
                    lp
                   )
     return(objCoefs)
-    
+
 }
 
 
@@ -224,12 +224,12 @@ chgRowLowerCLP <- function(lp, rlb) {
 #------------------------------------------------------------------------------#
 
 getRowLowerCLP <- function(lp) {
-    
+
     rlb <- .Call("getRowLower", PACKAGE = "clpAPI",
                    lp
                   )
     return(rlb)
-    
+
 }
 
 
@@ -250,12 +250,12 @@ chgRowUpperCLP <- function(lp, rub) {
 #------------------------------------------------------------------------------#
 
 getRowUpperCLP <- function(lp) {
-    
+
     rub <- .Call("getRowUpper", PACKAGE = "clpAPI",
                    lp
                   )
     return(rub)
-    
+
 }
 
 
@@ -276,12 +276,12 @@ chgColLowerCLP <- function(lp, lb) {
 #------------------------------------------------------------------------------#
 
 getColLowerCLP <- function(lp) {
-    
+
     lb <- .Call("getColLower", PACKAGE = "clpAPI",
                    lp
                   )
     return(lb)
-    
+
 }
 
 
@@ -302,12 +302,12 @@ chgColUpperCLP <- function(lp, ub) {
 #------------------------------------------------------------------------------#
 
 getColUpperCLP <- function(lp) {
-    
+
     ub <- .Call("getColUpper", PACKAGE = "clpAPI",
                    lp
                   )
     return(ub)
-    
+
 }
 
 
@@ -323,7 +323,7 @@ loadProblemCLP <- function(lp, ncols, nrows, ia, ja, ra,
     else {
         Clb <- as.numeric(lb)
     }
-    
+
     if (is.null(ub)) {
         Cub <- as.null(ub)
     }
@@ -337,14 +337,14 @@ loadProblemCLP <- function(lp, ncols, nrows, ia, ja, ra,
     else {
         Cobj_coef <- as.numeric(obj_coef)
     }
-    
+
     if (is.null(rlb)) {
         Crlb <- as.null(rlb)
     }
     else {
         Crlb <- as.numeric(rlb)
     }
-    
+
     if (is.null(rub)) {
         Crub <- as.null(rub)
     }
@@ -397,60 +397,60 @@ loadMatrixCLP <- function(lp, ncols, nrows, ia, ja, ra) {
 #------------------------------------------------------------------------------#
 
 getNumNnzCLP <- function(lp) {
-    
+
     nnz <- .Call("getNumNnz", PACKAGE = "clpAPI",
                    lp
                   )
     return(nnz)
-    
+
 }
 
 
 #------------------------------------------------------------------------------#
 
 getVecStartCLP <- function(lp) {
-    
+
     vec_start <- .Call("getVecStart", PACKAGE = "clpAPI",
                    lp
                   )
     return(vec_start)
-    
+
 }
 
 
 #------------------------------------------------------------------------------#
 
 getIndCLP <- function(lp) {
-    
+
     index <- .Call("getInd", PACKAGE = "clpAPI",
                    lp
                   )
     return(index)
-    
+
 }
 
 
 #------------------------------------------------------------------------------#
 
 getVecLenCLP <- function(lp) {
-    
+
     vec_len <- .Call("getVecLen", PACKAGE = "clpAPI",
                    lp
                   )
     return(vec_len)
-    
+
 }
 
 
 #------------------------------------------------------------------------------#
 
 getNnzCLP <- function(lp) {
-    
+
     n_elem <- .Call("getNnz", PACKAGE = "clpAPI",
                    lp
                   )
     return(n_elem)
-    
+
 }
 
 
@@ -485,12 +485,12 @@ setLogLevelCLP <- function(lp, amount) {
 #------------------------------------------------------------------------------#
 
 getLogLevelCLP <- function(lp) {
-    
+
     amount <- .Call("getLogLevel", PACKAGE = "clpAPI",
                    lp
                   )
     return(amount)
-    
+
 }
 
 
@@ -511,72 +511,72 @@ scaleModelCLP <- function(lp, mode) {
 #------------------------------------------------------------------------------#
 
 getScaleFlagCLP <- function(lp) {
-    
+
     flag <- .Call("getScaleFlag", PACKAGE = "clpAPI",
                    lp
                   )
     return(flag)
-    
+
 }
 
 
 #------------------------------------------------------------------------------#
 
 solveInitialCLP <- function(lp) {
-    
+
     ret <- .Call("solveInitial", PACKAGE = "clpAPI",
                    lp
                   )
     return(ret)
-    
+
 }
 
 
 #------------------------------------------------------------------------------#
 
 solveInitialDualCLP <- function(lp) {
-    
+
     ret <- .Call("solveInitialDual", PACKAGE = "clpAPI",
                    lp
                   )
     return(ret)
-    
+
 }
 
 
 #------------------------------------------------------------------------------#
 
 solveInitialPrimalCLP <- function(lp) {
-    
+
     ret <- .Call("solveInitialPrimal", PACKAGE = "clpAPI",
                    lp
                   )
     return(ret)
-    
+
 }
 
 
 #------------------------------------------------------------------------------#
 
 solveInitialBarrierCLP <- function(lp) {
-    
+
     ret <- .Call("solveInitialBarrier", PACKAGE = "clpAPI",
                    lp
                   )
     return(ret)
-    
+
 }
 
 
 #------------------------------------------------------------------------------#
 
 solveInitialBarrierNoCrossCLP <- function(lp) {
-    
+
     ret <- .Call("solveInitialBarrierNoCross", PACKAGE = "clpAPI",
                    lp
                   )
     return(ret)
-    
+
 }
 
 
@@ -589,102 +589,102 @@ dualCLP <- function(lp, ifValP = 0) {
                    as.integer(ifValP)
                   )
     return(ret)
-    
+
 }
 
 
 #------------------------------------------------------------------------------#
 
 primalCLP <- function(lp, ifValP = 0) {
-    
+
     ret <- .Call("primal", PACKAGE = "clpAPI",
                    lp,
                    as.integer(ifValP)
                   )
     return(ret)
-    
+
 }
 
 
 #------------------------------------------------------------------------------#
 
 idiotCLP <- function(lp, thd = 0) {
-    
+
     invisible(
         .Call("idiot", PACKAGE = "clpAPI",
               lp,
               as.integer(thd)
         )
     )
-    
+
 }
 
 
 #------------------------------------------------------------------------------#
 
 getSolStatusCLP <- function(lp) {
-    
+
     stat <- .Call("getSolStatus", PACKAGE = "clpAPI",
                    lp
                   )
     return(stat)
-    
+
 }
 
 
 #------------------------------------------------------------------------------#
 
 getObjValCLP <- function(lp) {
-    
+
     obj <- .Call("getObjVal", PACKAGE = "clpAPI",
                    lp
                   )
     return(obj)
-    
+
 }
 
 
 #------------------------------------------------------------------------------#
 
 getColPrimCLP <- function(lp) {
-    
+
     col_prim <- .Call("getColPrim", lp, PACKAGE = "clpAPI")
 
     return(col_prim)
-    
+
 }
 
 
 #------------------------------------------------------------------------------#
 
 getColDualCLP <- function(lp) {
-    
+
     col_dual <- .Call("getColDual", lp, PACKAGE = "clpAPI")
 
     return(col_dual)
-    
+
 }
 
 
 #------------------------------------------------------------------------------#
 
 getRowPrimCLP <- function(lp) {
-    
+
     row_prim <- .Call("getRowPrim", lp, PACKAGE = "clpAPI")
 
     return(row_prim)
-    
+
 }
 
 
 #------------------------------------------------------------------------------#
 
 getRowDualCLP <- function(lp) {
-    
+
     row_dual <- .Call("getRowDual", lp, PACKAGE = "clpAPI")
 
     return(row_dual)
-    
+
 }
 
 
@@ -721,7 +721,7 @@ delColsCLP <- function(lp, num, j) {
 #------------------------------------------------------------------------------#
 
 readMPSCLP <- function(lp, fname, keepNames = TRUE, ignoreErrors = FALSE) {
-    
+
     check <- .Call("readMPS", PACKAGE = "clpAPI",
                    lp,
                    as.character(fname),
@@ -729,33 +729,33 @@ readMPSCLP <- function(lp, fname, keepNames = TRUE, ignoreErrors = FALSE) {
                    as.integer(ignoreErrors)
                   )
     return(check)
-    
+
 }
 
 
 #------------------------------------------------------------------------------#
 
 saveModelCLP <- function(lp, fname) {
-    
+
     check <- .Call("saveModel", PACKAGE = "clpAPI",
                    lp,
                    as.character(fname)
                   )
     return(check)
-    
+
 }
 
 
 #------------------------------------------------------------------------------#
 
 restoreModelCLP <- function(lp, fname) {
-    
+
     check <- .Call("restoreModel", PACKAGE = "clpAPI",
                    lp,
                    as.character(fname)
                   )
     return(check)
-    
+
 }
 
 

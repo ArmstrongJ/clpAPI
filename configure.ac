@@ -1,4 +1,4 @@
-AC_INIT([clpAPI], [1.1.6], [geliudie@uni-duesseldorf.de])
+AC_INIT([clpAPI], [1.1.7], [geliudie@uni-duesseldorf.de])
 
 dnl # --------------------------------------------------------------------
 dnl # R compiler and flags
@@ -49,16 +49,20 @@ dnl # --------------------------------------------------------------------
 dnl # include and library directories
 if test [ -n "$CLP_INCLUDE" -a -n "$CLP_LIB" ] ; then
 
-    if test [ ! -d "$CLP_INCLUDE" ] ; then
-        AC_MSG_ERROR([directory $CLP_INCLUDE does not exist])
-    else
+    if test [ -d "$CLP_INCLUDE" ] ; then
         CLP_CPPFLAGS="-I${CLP_INCLUDE}/coin"
+    else
+        AC_MSG_ERROR([directory $CLP_INCLUDE does not exist])
     fi
 
-    if test [ ! -d "$CLP_LIB" ] ; then
-        AC_MSG_ERROR([directory $CLP_LIB does not exist])
+    if test [ -d "$CLP_LIB" ] ; then
+        if test [ -d "$CLP_LIB/coin" ] ; then
+            LIBS="-L${CLP_LIB} -L${CLP_LIB}/coin"
+        else
+            LIBS="-L${CLP_LIB}"
+        fi
     else
-        LIBS="-L${CLP_LIB} -L${CLP_LIB}/coin"
+        AC_MSG_ERROR([directory $CLP_LIB does not exist])
     fi
 
 else
