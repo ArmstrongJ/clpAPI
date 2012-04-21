@@ -1,5 +1,6 @@
 \name{delColsCLP}
 \alias{delColsCLP}
+\alias{Clp_deleteColumns}
 
 \title{
   Delete Columns in the Model
@@ -17,7 +18,9 @@
 
 \arguments{
   \item{lp}{
-    A pointer to a COIN-OR Clp problem object.
+    An object of class \code{"\linkS4class{clpPtr}"} as returned by
+    \code{\link{initProbCLP}}. This is basically a pointer to a COIN-OR Clp
+    problem object.
   }
   \item{num}{
     Number of columns to delete.

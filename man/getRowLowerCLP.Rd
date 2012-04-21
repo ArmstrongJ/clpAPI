@@ -1,5 +1,6 @@
 \name{getRowLowerCLP}
 \alias{getRowLowerCLP}
+\alias{Clp_rowLower}
 
 \title{
   Retrieve Row Lower Bound
@@ -17,7 +18,9 @@
 
 \arguments{
   \item{lp}{
-    A pointer to a COIN-OR Clp problem object.
+    An object of class \code{"\linkS4class{clpPtr}"} as returned by
+    \code{\link{initProbCLP}}. This is basically a pointer to a COIN-OR Clp
+    problem object.
   }
 }
 

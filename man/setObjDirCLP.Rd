@@ -1,5 +1,6 @@
 \name{setObjDirCLP}
 \alias{setObjDirCLP}
+\alias{Clp_setOptimizationDirection}
 
 \title{
   Set/Change Optimization Direction Flag
@@ -17,7 +18,9 @@
 
 \arguments{
   \item{lp}{
-    A pointer to a COIN-OR Clp problem object.
+    An object of class \code{"\linkS4class{clpPtr}"} as returned by
+    \code{\link{initProbCLP}}. This is basically a pointer to a COIN-OR Clp
+    problem object.
   }
   \item{lpdir}{
     Optimization direction flag: 1: minimize, -1: maximize,

@@ -1,5 +1,6 @@
 \name{chgRowLowerCLP}
 \alias{chgRowLowerCLP}
+\alias{Clp_chgRowLower}
 
 \title{
   Set/Change Row Lower Bounds
@@ -17,7 +18,9 @@
 
 \arguments{
   \item{lp}{
-    A pointer to a COIN-OR Clp problem object.
+    An object of class \code{"\linkS4class{clpPtr}"} as returned by
+    \code{\link{initProbCLP}}. This is basically a pointer to a COIN-OR Clp
+    problem object.
   }
   \item{rlb}{
     Numeric vector containing the lower bounds of the

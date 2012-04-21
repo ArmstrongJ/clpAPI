@@ -1,5 +1,5 @@
 /* clpAPI.h
-   R interface to GLPK.
+   R interface to COIN-OR Clp.
  
    Copyright (C) 2011 Gabriel Gelius-Dietrich, Department for Bioinformatics,
    Institute for Informatics, Heinrich-Heine-University, Duesseldorf, Germany.
@@ -27,17 +27,28 @@
 
 
 /* -------------------------------------------------------------------------- */
+/* help functions                                                             */
+/* -------------------------------------------------------------------------- */
+
+/* check for pointer to clp */
+SEXP isCLPptr(SEXP ptr);
+
+/* check for NULL pointer */
+SEXP isNULLptr(SEXP ptr);
+
+
+/* -------------------------------------------------------------------------- */
 /* API functions                                                              */
 /* -------------------------------------------------------------------------- */
 
-/* initialize glpk */
+/* initialize clp */
 SEXP initCLP(void);
 
 /* remove problem object */
 SEXP delProb(SEXP lp);
 
 /* create new problem object */
-SEXP initProb();
+SEXP initProb(SEXP ptrtype);
 
 /* set optimization direction */
 SEXP setObjDir(SEXP lp, SEXP dir);
@@ -47,12 +58,6 @@ SEXP getObjDir(SEXP lp);
 
 /* resize the model */
 SEXP resize(SEXP lp, SEXP nrows, SEXP ncols);
-
-/* delete rows */
-SEXP deleteRows(SEXP lp, SEXP nrows, SEXP i);
-
-/* delete columns */
-SEXP deleteCols(SEXP lp, SEXP ncols, SEXP j);
 
 /* add rows */
 SEXP addRows(SEXP lp, SEXP nrows,

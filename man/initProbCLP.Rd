@@ -1,5 +1,6 @@
 \name{initProbCLP}
 \alias{initProbCLP}
+\alias{Clp_newModel}
 
 \title{
   Create a COIN-OR Clp Problem Object
@@ -12,7 +13,13 @@
 }
 
 \usage{
-  initProbCLP()
+  initProbCLP(ptrtype = "clp_prob")
+}
+
+\arguments{
+  \item{ptrtype}{
+    A name for the pointer to a COIN-OR Clp problem object.
+  }
 }
 
 \details{
@@ -21,7 +28,7 @@
 }
 
 \value{
-  The function returns an external pointer object (externalptr).
+  An instance of class \code{"\linkS4class{clpPtr}"}.
 }
 
 \references{

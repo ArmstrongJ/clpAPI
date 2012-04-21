@@ -1,5 +1,5 @@
 /* clpR.h
-   R interface to GLPK.
+   R interface to COIN-OR Clp.
  
    Copyright (C) 2011 Gabriel Gelius-Dietrich, Department for Bioinformatics,
    Institute for Informatics, Heinrich-Heine-University, Duesseldorf, Germany.
@@ -53,7 +53,7 @@
 /* -------------------------------------------------------------------------- */
 /* problem */
 #define checkTypeOfProb(cp) do { \
-    if ( (TYPEOF(cp) != EXTPTRSXP) || (R_ExternalPtrTag(cp) != tagCLP) ) \
+    if ( (TYPEOF(cp) != EXTPTRSXP) || (R_ExternalPtrTag(cp) != tagCLPprob) ) \
         Rf_error("You must pass a clp problem!"); \
 } while (0)
 

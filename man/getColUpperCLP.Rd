@@ -1,5 +1,6 @@
 \name{getColUpperCLP}
 \alias{getColUpperCLP}
+\alias{Clp_columnUpper}
 
 \title{
   Retrieve Column Upper Bounds
@@ -7,7 +8,7 @@
 
 \description{
   Low level interface function to the COIN-OR Clp function
-  \code{Clp_columnLower}. Consult the COIN-OR Clp documentation
+  \code{Clp_columnUpper}. Consult the COIN-OR Clp documentation
   for more detailed information.
 }
 
@@ -17,14 +18,16 @@
 
 \arguments{
   \item{lp}{
-    A pointer to a COIN-OR Clp problem object.
+    An object of class \code{"\linkS4class{clpPtr}"} as returned by
+    \code{\link{initProbCLP}}. This is basically a pointer to a COIN-OR Clp
+    problem object.
   }
 }
 
 \details{
   Interface to the C function \code{getColLower} which calls
   the COIN-OR Clp functions \code{Clp_numberColumns} and
-  \code{Clp_columnLower}.
+  \code{Clp_columnUpper}.
 }
 
 \value{

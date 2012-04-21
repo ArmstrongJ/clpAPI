@@ -1,5 +1,6 @@
 \name{setLogLevelCLP}
 \alias{setLogLevelCLP}
+\alias{Clp_setLogLevel}
 
 \title{
   Set the Amount of Output to STDOUT
@@ -17,7 +18,9 @@
 
 \arguments{
   \item{lp}{
-    A pointer to a COIN-OR Clp problem object.
+    An object of class \code{"\linkS4class{clpPtr}"} as returned by
+    \code{\link{initProbCLP}}. This is basically a pointer to a COIN-OR Clp
+    problem object.
   }
   \item{amount}{
     Log level flag: 0: nothing, 1: just final, 2: just

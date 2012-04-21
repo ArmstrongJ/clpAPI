@@ -1,8 +1,8 @@
 Package: clpAPI
 Type: Package
 Title: R Interface to C API of COIN-OR Clp
-Version: 1.1.7
-Date: 2011-08-22
+Version: 1.2.1
+Date: 2012-04-21
 Author: Gabriel Gelius-Dietrich
 Maintainer: Gabriel Gelius-Dietrich <geliudie@uni-duesseldorf.de>
 Depends: R (>= 2.6.0), methods
@@ -11,6 +11,7 @@ Description: R Interface to C API of COIN-OR Clp, depends on COIN-OR
 SystemRequirements: COIN-OR Clp (>= 1.12.0)
 License: GPL-3
 LazyLoad: yes
-Packaged: 2011-08-22 16:06:59 UTC; gabriel
+Collate: generics.R clp_ptrClass.R clp.R clpAPI.R zzz.R
+Packaged: 2012-04-21 18:46:09 UTC; gabriel
 Repository: CRAN
-Date/Publication: 2011-08-22 19:47:32
+Date/Publication: 2012-04-21 19:12:53

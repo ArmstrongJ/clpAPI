@@ -1,5 +1,6 @@
 \name{getObjValCLP}
 \alias{getObjValCLP}
+\alias{Clp_objectiveValue}
 
 \title{
   Retrieve the Value of the Objective Function After Optimization
@@ -17,7 +18,9 @@
 
 \arguments{
   \item{lp}{
-    A pointer to a COIN-OR Clp problem object.
+    An object of class \code{"\linkS4class{clpPtr}"} as returned by
+    \code{\link{initProbCLP}}. This is basically a pointer to a COIN-OR Clp
+    problem object.
   }
 }
 

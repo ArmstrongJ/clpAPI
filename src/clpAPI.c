@@ -1,23 +1,23 @@
 /* clpAPI.c
-   R interface to GLPK.
- 
+   R interface to COIN-OR Clp.
+
    Copyright (C) 2011 Gabriel Gelius-Dietrich, Department for Bioinformatics,
    Institute for Informatics, Heinrich-Heine-University, Duesseldorf, Germany.
    All right reserved.
    Email: geliudie@uni-duesseldorf.de
- 
+
    This file is part of clpAPI.
- 
+
    ClpAPI is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
- 
+
    ClpAPI is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
- 
+
    You should have received a copy of the GNU General Public License
    along with clpAPI.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -26,15 +26,73 @@
 #include "clpAPI.h"
 
 
-static SEXP tagCLP;
+static SEXP tagCLPprob;
 
 
 /* -------------------------------------------------------------------------- */
-/* initialize glpk */
+/* Finalizer                                                                  */
+/* -------------------------------------------------------------------------- */
+
+/* -------------------------------------------------------------------------- */
+/* finalizer for clp problem objects */
+static void clpProbFinalizer (SEXP lp) {
+    if (!R_ExternalPtrAddr(lp)) {
+        return;
+    }
+    else {
+        delProb(lp);
+    }
+}
+
+
+/* -------------------------------------------------------------------------- */
+/* help functions                                                             */
+/* -------------------------------------------------------------------------- */
+
+/* check for pointer to clp */
+SEXP isCLPptr(SEXP ptr) {
+
+    SEXP out = R_NilValue;
+
+    if ( (TYPEOF(ptr) == EXTPTRSXP) &&
+         (R_ExternalPtrTag(ptr) == tagCLPprob) ) {
+        out = Rf_ScalarLogical(1);
+    }
+    else {
+        out = Rf_ScalarLogical(0);
+    }
+
+    return out;
+}
+
+
+/* check for NULL pointer */
+SEXP isNULLptr(SEXP ptr) {
+
+    SEXP out = R_NilValue;
+
+    if ( (TYPEOF(ptr) == EXTPTRSXP) &&
+         (R_ExternalPtrAddr(ptr) == NULL) ) {
+        out = Rf_ScalarLogical(1);
+    }
+    else {
+        out = Rf_ScalarLogical(0);
+    }
+
+    return out;
+}
+
+
+/* -------------------------------------------------------------------------- */
+/* API-Functions                                                              */
+/* -------------------------------------------------------------------------- */
+
+/* -------------------------------------------------------------------------- */
+/* initialize clp */
 SEXP initCLP(void) {
-    tagCLP = Rf_install("TYPE_CLP");
+    tagCLPprob = Rf_install("TYPE_CLP_PROB");
     return R_NilValue;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -57,18 +115,31 @@ SEXP delProb(SEXP lp) {
 
 /* -------------------------------------------------------------------------- */
 /* create new problem object */
-SEXP initProb() {
+SEXP initProb(SEXP ptrtype) {
 
     SEXP lpext = R_NilValue;
+    SEXP ptr, class;
+
     Clp_Simplex *lp;
-    
+
+    /* create problem pointer */
+    PROTECT(ptr = Rf_allocVector(STRSXP, 1));
+    SET_STRING_ELT(ptr, 0, STRING_ELT(ptrtype, 0));
+
+    PROTECT(class = Rf_allocVector(STRSXP, 1));
+    SET_STRING_ELT(class, 0, Rf_mkChar("clp_ptr"));
+
     lp = Clp_newModel();
 
-    lpext = R_MakeExternalPtr(lp, tagCLP, R_NilValue);
-    /* R_RegisterCFinalizer(lpext, (R_CFinalizer_t) delProb); */
+    lpext = R_MakeExternalPtr(lp, tagCLPprob, R_NilValue);
+    PROTECT(lpext);
+    R_RegisterCFinalizerEx(lpext, clpProbFinalizer, TRUE);
+    Rf_setAttrib(ptr, class, lpext);
+    Rf_classgets(ptr, class);
+    UNPROTECT(3);
 
-    return lpext;
-} 
+    return ptr;
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -79,10 +150,10 @@ SEXP setObjDir(SEXP lp, SEXP dir) {
 
     checkProb(lp);
 
-    Clp_setOptimizationDirection(R_ExternalPtrAddr(lp), Rf_asReal(dir)); 
+    Clp_setOptimizationDirection(R_ExternalPtrAddr(lp), Rf_asReal(dir));
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -99,7 +170,7 @@ SEXP getObjDir(SEXP lp) {
     out = Rf_ScalarReal(dir);
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -113,85 +184,52 @@ SEXP resize(SEXP lp, SEXP nrows, SEXP ncols) {
     Clp_resize(R_ExternalPtrAddr(lp), Rf_asInteger(nrows), Rf_asInteger(ncols));
 
     return out;
-} 
-
-
-/* -------------------------------------------------------------------------- */
-/* delete rows */
-SEXP deleteRows(SEXP lp, SEXP nrows, SEXP i) {
-    
-    SEXP out = R_NilValue;
-    
-    const int *ri = INTEGER(i);
-    
-    checkProb(lp);
-    
-    Clp_deleteRows(R_ExternalPtrAddr(lp), Rf_asInteger(nrows), ri);
-    
-    return out;
-} 
-
-
-/* -------------------------------------------------------------------------- */
-/* delete columns */
-SEXP deleteCols(SEXP lp, SEXP ncols, SEXP j) {
-    
-    SEXP out = R_NilValue;
-    
-    const int *rj = INTEGER(j);
-
-    checkProb(lp);
-    
-    Clp_deleteColumns(R_ExternalPtrAddr(lp),
-                      Rf_asInteger(ncols), rj);
-    
-    return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
 /* add rows */
 SEXP addRows(SEXP lp, SEXP nrows,
              SEXP lb, SEXP ub, SEXP rowst, SEXP cols, SEXP val) {
-    
+
     SEXP out = R_NilValue;
-    
+
     const double *rlb  = REAL(lb);
     const double *rub  = REAL(ub);
     const int *rrowst  = INTEGER(rowst);
     const int *rcols   = INTEGER(cols);
     const double *rval = REAL(val);
-    
+
     checkProb(lp);
-    
+
     Clp_addRows(R_ExternalPtrAddr(lp), Rf_asInteger(nrows),
                 rlb, rub, rrowst, rcols, rval);
-    
+
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
 /* add columns */
 SEXP addCols(SEXP lp, SEXP ncols,
              SEXP lb, SEXP ub, SEXP obj, SEXP colst, SEXP rows, SEXP val) {
-    
+
     SEXP out = R_NilValue;
-    
+
     const double *rlb  = REAL(lb);
     const double *rub  = REAL(ub);
     const double *robj = REAL(obj);
     const int *rcolst  = INTEGER(colst);
     const int *rrows   = INTEGER(rows);
     const double *rval = REAL(val);
-    
+
     checkProb(lp);
-    
+
     Clp_addColumns(R_ExternalPtrAddr(lp), Rf_asInteger(ncols),
                    rlb, rub, robj, rcolst, rrows, rval);
-    
+
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -208,7 +246,7 @@ SEXP getNumRows(SEXP lp) {
     out = Rf_ScalarInteger(nrows);
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -225,7 +263,7 @@ SEXP getNumCols(SEXP lp) {
     out = Rf_ScalarInteger(ncols);
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -239,7 +277,7 @@ SEXP chgObjCoefs(SEXP lp, SEXP objCoef) {
     Clp_chgObjCoefficients(R_ExternalPtrAddr(lp), REAL(objCoef));
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -250,7 +288,7 @@ SEXP getObjCoefs(SEXP lp) {
 
     int ncols, k;
     double *obj_coef;
-    
+
     checkProb(lp);
 
     ncols = Clp_numberColumns(R_ExternalPtrAddr(lp));
@@ -261,9 +299,9 @@ SEXP getObjCoefs(SEXP lp) {
         REAL(out)[k] = obj_coef[k];
     }
     UNPROTECT(1);
-    
+
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -277,7 +315,7 @@ SEXP chgRowLower(SEXP lp, SEXP rlb) {
     Clp_chgRowLower(R_ExternalPtrAddr(lp), REAL(rlb));
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -290,7 +328,7 @@ SEXP getRowLower(SEXP lp) {
     double *rlb;
 
     checkProb(lp);
-    
+
     nrows = Clp_numberRows(R_ExternalPtrAddr(lp));
     rlb = Clp_rowLower(R_ExternalPtrAddr(lp));
 
@@ -298,10 +336,10 @@ SEXP getRowLower(SEXP lp) {
     for (k = 0; k < nrows; k++) {
         REAL(out)[k] = rlb[k];
     }
-    UNPROTECT(1);  
+    UNPROTECT(1);
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -315,7 +353,7 @@ SEXP chgRowUpper(SEXP lp, SEXP rub) {
     Clp_chgRowUpper(R_ExternalPtrAddr(lp), REAL(rub));
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -326,7 +364,7 @@ SEXP getRowUpper(SEXP lp) {
 
     int nrows, k;
     double *rub;
-    
+
     checkProb(lp);
 
     nrows = Clp_numberRows(R_ExternalPtrAddr(lp));
@@ -336,10 +374,10 @@ SEXP getRowUpper(SEXP lp) {
     for (k = 0; k < nrows; k++) {
         REAL(out)[k] = rub[k];
     }
-    UNPROTECT(1);  
+    UNPROTECT(1);
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -353,7 +391,7 @@ SEXP chgColLower(SEXP lp, SEXP lb) {
     Clp_chgColumnLower(R_ExternalPtrAddr(lp), REAL(lb));
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -364,7 +402,7 @@ SEXP getColLower(SEXP lp) {
 
     int ncols, k;
     double *lb;
-    
+
     checkProb(lp);
 
     ncols = Clp_numberColumns(R_ExternalPtrAddr(lp));
@@ -374,10 +412,10 @@ SEXP getColLower(SEXP lp) {
     for (k = 0; k < ncols; k++) {
         REAL(out)[k] = lb[k];
     }
-    UNPROTECT(1);  
+    UNPROTECT(1);
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -391,7 +429,7 @@ SEXP chgColUpper(SEXP lp, SEXP ub) {
     Clp_chgColumnUpper(R_ExternalPtrAddr(lp), REAL(ub));
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -402,7 +440,7 @@ SEXP getColUpper(SEXP lp) {
 
     int ncols, k;
     double *ub;
-    
+
     checkProb(lp);
 
     ncols = Clp_numberColumns(R_ExternalPtrAddr(lp));
@@ -412,10 +450,10 @@ SEXP getColUpper(SEXP lp) {
     for (k = 0; k < ncols; k++) {
         REAL(out)[k] = ub[k];
     }
-    UNPROTECT(1);  
+    UNPROTECT(1);
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -441,7 +479,7 @@ SEXP loadProblem(SEXP lp, SEXP ncols, SEXP nrows, SEXP ia, SEXP ja, SEXP ra,
 /*     double *rrub = REAL(rub); */
 
     checkProb(lp);
-    
+
     if (clb == R_NilValue) {
         rclb = NULL;
     }
@@ -455,7 +493,7 @@ SEXP loadProblem(SEXP lp, SEXP ncols, SEXP nrows, SEXP ia, SEXP ja, SEXP ra,
     else {
         rcub = REAL(cub);
     }
-    
+
     if (obj_coef == R_NilValue) {
         robj_coef = NULL;
     }
@@ -483,7 +521,7 @@ SEXP loadProblem(SEXP lp, SEXP ncols, SEXP nrows, SEXP ia, SEXP ja, SEXP ra,
                    );
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -505,7 +543,7 @@ SEXP loadMatrix(SEXP lp, SEXP ncols, SEXP nrows, SEXP ia, SEXP ja, SEXP ra) {
                    );
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -514,15 +552,15 @@ SEXP getNumNnz(SEXP lp) {
 
     SEXP out = R_NilValue;
     int nnz;
-    
+
     checkProb(lp);
 
     nnz = Clp_getNumElements(R_ExternalPtrAddr(lp));
-    
+
     out = Rf_ScalarInteger(nnz);
-    
+
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -530,7 +568,7 @@ SEXP getNumNnz(SEXP lp) {
 SEXP getVecStart(SEXP lp) {
 
     SEXP out = R_NilValue;
-    
+
     int ncols, k;
     /* const int *vec_start; */
     const CoinBigIndex *vec_start;
@@ -544,10 +582,10 @@ SEXP getVecStart(SEXP lp) {
     for (k = 0; k < ncols; k++) {
         INTEGER(out)[k] = vec_start[k];
     }
-    UNPROTECT(1);  
+    UNPROTECT(1);
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -555,7 +593,7 @@ SEXP getVecStart(SEXP lp) {
 SEXP getInd(SEXP lp) {
 
     SEXP out = R_NilValue;
-    
+
     int nnz, k;
     const int *index;
 
@@ -568,10 +606,10 @@ SEXP getInd(SEXP lp) {
     for (k = 0; k < nnz; k++) {
         INTEGER(out)[k] = index[k];
     }
-    UNPROTECT(1);  
+    UNPROTECT(1);
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -580,7 +618,7 @@ SEXP getInd(SEXP lp) {
 SEXP getVecLen(SEXP lp) {
 
     SEXP out = R_NilValue;
-    
+
     int ncols, k;
     const int *vec_len;
 
@@ -593,10 +631,10 @@ SEXP getVecLen(SEXP lp) {
     for (k = 0; k < ncols; k++) {
         INTEGER(out)[k] = vec_len[k];
     }
-    UNPROTECT(1);  
+    UNPROTECT(1);
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -604,7 +642,7 @@ SEXP getVecLen(SEXP lp) {
 SEXP getNnz(SEXP lp) {
 
     SEXP out = R_NilValue;
-    
+
     int nnz, k;
     const double *n_elem;
 
@@ -617,10 +655,10 @@ SEXP getNnz(SEXP lp) {
     for (k = 0; k < nnz; k++) {
         REAL(out)[k] = n_elem[k];
     }
-    UNPROTECT(1);  
+    UNPROTECT(1);
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -628,15 +666,15 @@ SEXP getNnz(SEXP lp) {
 SEXP printModel(SEXP lp, SEXP prefix) {
 
     SEXP out = R_NilValue;
-    const char *rprefix = CHAR(STRING_ELT(prefix, 0));    
-    
+    const char *rprefix = CHAR(STRING_ELT(prefix, 0));
+
     checkProb(lp);
 
     Clp_printModel(R_ExternalPtrAddr(lp), rprefix);
     /* Clp_printModel(R_ExternalPtrAddr(lp), "CLPmodel"); */
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -644,13 +682,13 @@ SEXP printModel(SEXP lp, SEXP prefix) {
 SEXP setLogLevel(SEXP lp, SEXP amount) {
 
     SEXP out = R_NilValue;
-    
+
     checkProb(lp);
 
     Clp_setLogLevel(R_ExternalPtrAddr(lp), Rf_asInteger(amount));
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -659,15 +697,15 @@ SEXP getLogLevel(SEXP lp) {
 
     SEXP out = R_NilValue;
     int amount;
-    
+
     checkProb(lp);
 
     amount = Clp_logLevel(R_ExternalPtrAddr(lp));
 
     out = Rf_ScalarInteger(amount);
-    
+
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -675,13 +713,13 @@ SEXP getLogLevel(SEXP lp) {
 SEXP scaleModel(SEXP lp, SEXP mode) {
 
     SEXP out = R_NilValue;
-    
+
     checkProb(lp);
 
     Clp_scaling(R_ExternalPtrAddr(lp), Rf_asInteger(mode));
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -690,15 +728,15 @@ SEXP getScaleFlag(SEXP lp) {
 
     SEXP out = R_NilValue;
     int flag;
-    
+
     checkProb(lp);
 
     flag = Clp_scalingFlag(R_ExternalPtrAddr(lp));
-    
+
     out = Rf_ScalarInteger(flag);
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -707,15 +745,15 @@ SEXP solveInitial(SEXP lp) {
 
     SEXP out = R_NilValue;
     int ret;
-    
+
     checkProb(lp);
 
     ret = Clp_initialSolve(R_ExternalPtrAddr(lp));
-    
+
     out = Rf_ScalarInteger(ret);
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -724,15 +762,15 @@ SEXP solveInitialDual(SEXP lp) {
 
     SEXP out = R_NilValue;
     int ret;
-    
+
     checkProb(lp);
 
     ret = Clp_initialDualSolve(R_ExternalPtrAddr(lp));
-    
+
     out = Rf_ScalarInteger(ret);
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -741,15 +779,15 @@ SEXP solveInitialPrimal(SEXP lp) {
 
     SEXP out = R_NilValue;
     int ret;
-    
+
     checkProb(lp);
 
     ret = Clp_initialPrimalSolve(R_ExternalPtrAddr(lp));
-    
+
     out = Rf_ScalarInteger(ret);
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -758,15 +796,15 @@ SEXP solveInitialBarrier(SEXP lp) {
 
     SEXP out = R_NilValue;
     int ret;
-    
+
     checkProb(lp);
 
     ret = Clp_initialBarrierSolve(R_ExternalPtrAddr(lp));
-    
+
     out = Rf_ScalarInteger(ret);
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -775,15 +813,15 @@ SEXP solveInitialBarrierNoCross(SEXP lp) {
 
     SEXP out = R_NilValue;
     int ret;
-    
+
     checkProb(lp);
 
     ret = Clp_initialBarrierNoCrossSolve(R_ExternalPtrAddr(lp));
-    
+
     out = Rf_ScalarInteger(ret);
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -792,15 +830,15 @@ SEXP dual(SEXP lp, SEXP ifValP) {
 
     SEXP out = R_NilValue;
     int ret;
-    
+
     checkProb(lp);
 
     ret = Clp_dual(R_ExternalPtrAddr(lp), Rf_asInteger(ifValP));
-    
+
     out = Rf_ScalarInteger(ret);
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -809,29 +847,29 @@ SEXP primal(SEXP lp, SEXP ifValP) {
 
     SEXP out = R_NilValue;
     int ret;
-    
+
     checkProb(lp);
 
     ret = Clp_primal(R_ExternalPtrAddr(lp), Rf_asInteger(ifValP));
-    
+
     out = Rf_ScalarInteger(ret);
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
 /* solve problem using the idiot code */
 SEXP idiot(SEXP lp, SEXP thd) {
-    
+
     SEXP out = R_NilValue;
-    
+
     checkProb(lp);
-    
+
     Clp_idiot(R_ExternalPtrAddr(lp), Rf_asInteger(thd));
-    
+
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -840,15 +878,15 @@ SEXP getSolStatus(SEXP lp) {
 
     SEXP out = R_NilValue;
     int stat;
-    
+
     checkProb(lp);
 
     stat = Clp_status(R_ExternalPtrAddr(lp));
-    
+
     out = Rf_ScalarInteger(stat);
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -857,15 +895,15 @@ SEXP getObjVal(SEXP lp) {
 
     SEXP out = R_NilValue;
     double obj;
-    
+
     checkProb(lp);
 
     obj = Clp_objectiveValue(R_ExternalPtrAddr(lp));
-    
+
     out = Rf_ScalarReal(obj);
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -873,7 +911,7 @@ SEXP getObjVal(SEXP lp) {
 SEXP getColPrim(SEXP lp) {
 
     SEXP out = R_NilValue;
-    
+
     int ncols, k;
     double *col_prim;
 
@@ -886,10 +924,10 @@ SEXP getColPrim(SEXP lp) {
     for (k = 0; k < ncols; k++) {
         REAL(out)[k] = col_prim[k];
     }
-    UNPROTECT(1);  
+    UNPROTECT(1);
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -897,7 +935,7 @@ SEXP getColPrim(SEXP lp) {
 SEXP getColDual(SEXP lp) {
 
     SEXP out = R_NilValue;
-    
+
     int ncols, k;
     double *col_dual;
 
@@ -910,10 +948,10 @@ SEXP getColDual(SEXP lp) {
     for (k = 0; k < ncols; k++) {
         REAL(out)[k] = col_dual[k];
     }
-    UNPROTECT(1);  
+    UNPROTECT(1);
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -921,7 +959,7 @@ SEXP getColDual(SEXP lp) {
 SEXP getRowPrim(SEXP lp) {
 
     SEXP out = R_NilValue;
-    
+
     int nrows, k;
     double *row_prim;
 
@@ -934,10 +972,10 @@ SEXP getRowPrim(SEXP lp) {
     for (k = 0; k < nrows; k++) {
         REAL(out)[k] = row_prim[k];
     }
-    UNPROTECT(1);  
+    UNPROTECT(1);
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -945,7 +983,7 @@ SEXP getRowPrim(SEXP lp) {
 SEXP getRowDual(SEXP lp) {
 
     SEXP out = R_NilValue;
-    
+
     int nrows, k;
     double *row_dual;
 
@@ -958,10 +996,10 @@ SEXP getRowDual(SEXP lp) {
     for (k = 0; k < nrows; k++) {
         REAL(out)[k] = row_dual[k];
     }
-    UNPROTECT(1);  
+    UNPROTECT(1);
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -969,13 +1007,13 @@ SEXP getRowDual(SEXP lp) {
 SEXP delRows(SEXP lp, SEXP num, SEXP i) {
 
     SEXP out = R_NilValue;
-    
+
     checkProb(lp);
 
     Clp_deleteRows(R_ExternalPtrAddr(lp), Rf_asInteger(num), INTEGER(i));
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -983,13 +1021,13 @@ SEXP delRows(SEXP lp, SEXP num, SEXP i) {
 SEXP delCols(SEXP lp, SEXP num, SEXP j) {
 
     SEXP out = R_NilValue;
-    
+
     checkProb(lp);
 
     Clp_deleteColumns(R_ExternalPtrAddr(lp), Rf_asInteger(num), INTEGER(j));
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -997,55 +1035,55 @@ SEXP delCols(SEXP lp, SEXP num, SEXP j) {
 SEXP readMPS(SEXP lp, SEXP fname, SEXP keepNames, SEXP ignoreErrors) {
 
     SEXP out = R_NilValue;
-    const char *rfname = CHAR(STRING_ELT(fname, 0));    
+    const char *rfname = CHAR(STRING_ELT(fname, 0));
     int check = 0;
-    
+
     checkProb(lp);
 
     check = Clp_readMps(R_ExternalPtrAddr(lp), rfname, Rf_asInteger(keepNames),
                         Rf_asInteger(ignoreErrors)
                        );
-    
+
     out = Rf_ScalarInteger(check);
 
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
 /* save model to file */
 SEXP saveModel(SEXP lp, SEXP fname) {
-    
+
     SEXP out = R_NilValue;
-    const char *rfname = CHAR(STRING_ELT(fname, 0));    
+    const char *rfname = CHAR(STRING_ELT(fname, 0));
     int check = 0;
-    
+
     checkProb(lp);
-    
+
     check = Clp_saveModel(R_ExternalPtrAddr(lp), rfname);
-    
+
     out = Rf_ScalarInteger(check);
-    
+
     return out;
-} 
+}
 
 
 /* -------------------------------------------------------------------------- */
 /* restore model from file */
 SEXP restoreModel(SEXP lp, SEXP fname) {
-    
+
     SEXP out = R_NilValue;
-    const char *rfname = CHAR(STRING_ELT(fname, 0));    
+    const char *rfname = CHAR(STRING_ELT(fname, 0));
     int check = 0;
-    
+
     checkProb(lp);
-    
+
     check = Clp_restoreModel(R_ExternalPtrAddr(lp), rfname);
-    
+
     out = Rf_ScalarInteger(check);
-    
+
     return out;
-} 
+}
 
 
 

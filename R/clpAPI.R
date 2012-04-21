@@ -35,15 +35,21 @@
 
 delProbCLP <- function(lp) {
 
-    invisible(.Call("delProb", lp, PACKAGE = "clpAPI"))
+    invisible(.Call("delProb", clpPointer(lp), PACKAGE = "clpAPI"))
 
 }
 
 
 #------------------------------------------------------------------------------#
 
-initProbCLP <- function() {
-    return(.Call("initProb", PACKAGE = "clpAPI"))
+initProbCLP <- function(ptrtype = "clp_prob") {
+    lp <- .Call("initProb", PACKAGE = "clpAPI",
+                as.character(ptrtype)
+          )
+
+    lpP <- clp_Pointer(lp)
+
+    return(lpP)
 }
 
 
@@ -53,7 +59,7 @@ setObjDirCLP <- function(lp, lpdir) {
 
     invisible(
         .Call("setObjDir", PACKAGE = "clpAPI",
-              lp,
+              clpPointer(lp),
               as.numeric(lpdir)
         )
     )
@@ -66,7 +72,7 @@ setObjDirCLP <- function(lp, lpdir) {
 getObjDirCLP <- function(lp) {
 
     lpdir <- .Call("getObjDir", PACKAGE = "clpAPI",
-                   lp
+                   clpPointer(lp)
                   )
     return(lpdir)
 
@@ -79,39 +85,9 @@ resizeCLP <- function(lp, nrows, ncols) {
 
     invisible(
         .Call("resize", PACKAGE = "clpAPI",
-              lp,
+              clpPointer(lp),
               as.integer(nrows),
               as.integer(ncols)
-        )
-    )
-
-}
-
-
-#------------------------------------------------------------------------------#
-
-deleteRowsCLP <- function(lp, nrows, i) {
-
-    invisible(
-        .Call("deleteRows", PACKAGE = "clpAPI",
-              lp,
-              as.integer(nrows),
-              as.integer(i)
-        )
-    )
-
-}
-
-
-#------------------------------------------------------------------------------#
-
-deleteColsCLP <- function(lp, ncols, j) {
-
-    invisible(
-        .Call("deleteCols", PACKAGE = "clpAPI",
-              lp,
-              as.integer(ncols),
-              as.integer(j)
         )
     )
 
@@ -124,7 +100,7 @@ addRowsCLP <- function(lp, nrows, lb, ub, rowst, cols, val) {
 
     invisible(
         .Call("addRows", PACKAGE = "clpAPI",
-              lp,
+              clpPointer(lp),
               as.integer(nrows),
               as.numeric(lb),
               as.numeric(ub),
@@ -143,7 +119,7 @@ addColsCLP <- function(lp, ncols, lb, ub, obj, colst, rows, val) {
 
     invisible(
         .Call("addCols", PACKAGE = "clpAPI",
-              lp,
+              clpPointer(lp),
               as.integer(ncols),
               as.numeric(lb),
               as.numeric(ub),
@@ -162,7 +138,7 @@ addColsCLP <- function(lp, ncols, lb, ub, obj, colst, rows, val) {
 getNumRowsCLP <- function(lp) {
 
     nrows <- .Call("getNumRows", PACKAGE = "clpAPI",
-                   lp
+                   clpPointer(lp)
                   )
     return(nrows)
 
@@ -174,7 +150,7 @@ getNumRowsCLP <- function(lp) {
 getNumColsCLP <- function(lp) {
 
     ncols <- .Call("getNumCols", PACKAGE = "clpAPI",
-                   lp
+                   clpPointer(lp)
                   )
     return(ncols)
 
@@ -187,7 +163,7 @@ chgObjCoefsCLP <- function(lp, objCoef) {
 
     invisible(
         .Call("chgObjCoefs", PACKAGE = "clpAPI",
-              lp,
+              clpPointer(lp),
               as.numeric(objCoef)
         )
     )
@@ -200,8 +176,8 @@ chgObjCoefsCLP <- function(lp, objCoef) {
 getObjCoefsCLP <- function(lp) {
 
     objCoefs <- .Call("getObjCoefs", PACKAGE = "clpAPI",
-                   lp
-                  )
+                      clpPointer(lp)
+                     )
     return(objCoefs)
 
 }
@@ -213,7 +189,7 @@ chgRowLowerCLP <- function(lp, rlb) {
 
     invisible(
         .Call("chgRowLower", PACKAGE = "clpAPI",
-              lp,
+              clpPointer(lp),
               as.numeric(rlb)
         )
     )
@@ -226,8 +202,8 @@ chgRowLowerCLP <- function(lp, rlb) {
 getRowLowerCLP <- function(lp) {
 
     rlb <- .Call("getRowLower", PACKAGE = "clpAPI",
-                   lp
-                  )
+                 clpPointer(lp)
+                )
     return(rlb)
 
 }
@@ -239,7 +215,7 @@ chgRowUpperCLP <- function(lp, rub) {
 
     invisible(
         .Call("chgRowUpper", PACKAGE = "clpAPI",
-              lp,
+              clpPointer(lp),
               as.numeric(rub)
         )
     )
@@ -252,8 +228,8 @@ chgRowUpperCLP <- function(lp, rub) {
 getRowUpperCLP <- function(lp) {
 
     rub <- .Call("getRowUpper", PACKAGE = "clpAPI",
-                   lp
-                  )
+                 clpPointer(lp)
+                )
     return(rub)
 
 }
@@ -265,7 +241,7 @@ chgColLowerCLP <- function(lp, lb) {
 
     invisible(
         .Call("chgColLower", PACKAGE = "clpAPI",
-              lp,
+              clpPointer(lp),
               as.numeric(lb)
         )
     )
@@ -278,8 +254,8 @@ chgColLowerCLP <- function(lp, lb) {
 getColLowerCLP <- function(lp) {
 
     lb <- .Call("getColLower", PACKAGE = "clpAPI",
-                   lp
-                  )
+                clpPointer(lp)
+               )
     return(lb)
 
 }
@@ -291,7 +267,7 @@ chgColUpperCLP <- function(lp, ub) {
 
     invisible(
         .Call("chgColUpper", PACKAGE = "clpAPI",
-              lp,
+              clpPointer(lp),
               as.numeric(ub)
         )
     )
@@ -304,8 +280,8 @@ chgColUpperCLP <- function(lp, ub) {
 getColUpperCLP <- function(lp) {
 
     ub <- .Call("getColUpper", PACKAGE = "clpAPI",
-                   lp
-                  )
+                clpPointer(lp)
+               )
     return(ub)
 
 }
@@ -354,7 +330,7 @@ loadProblemCLP <- function(lp, ncols, nrows, ia, ja, ra,
 
     invisible(
         .Call("loadProblem", PACKAGE = "clpAPI",
-              lp,
+              clpPointer(lp),
               as.integer(ncols),
               as.integer(nrows),
               as.integer(ia),
@@ -382,7 +358,7 @@ loadMatrixCLP <- function(lp, ncols, nrows, ia, ja, ra) {
 
     invisible(
         .Call("loadMatrix", PACKAGE = "clpAPI",
-              lp,
+              clpPointer(lp),
               as.integer(ncols),
               as.integer(nrows),
               as.integer(ia),
@@ -399,8 +375,8 @@ loadMatrixCLP <- function(lp, ncols, nrows, ia, ja, ra) {
 getNumNnzCLP <- function(lp) {
 
     nnz <- .Call("getNumNnz", PACKAGE = "clpAPI",
-                   lp
-                  )
+                 clpPointer(lp)
+                )
     return(nnz)
 
 }
@@ -411,8 +387,8 @@ getNumNnzCLP <- function(lp) {
 getVecStartCLP <- function(lp) {
 
     vec_start <- .Call("getVecStart", PACKAGE = "clpAPI",
-                   lp
-                  )
+                       clpPointer(lp)
+                      )
     return(vec_start)
 
 }
@@ -423,7 +399,7 @@ getVecStartCLP <- function(lp) {
 getIndCLP <- function(lp) {
 
     index <- .Call("getInd", PACKAGE = "clpAPI",
-                   lp
+                   clpPointer(lp)
                   )
     return(index)
 
@@ -447,8 +423,8 @@ getVecLenCLP <- function(lp) {
 getNnzCLP <- function(lp) {
 
     n_elem <- .Call("getNnz", PACKAGE = "clpAPI",
-                   lp
-                  )
+                    clpPointer(lp)
+                   )
     return(n_elem)
 
 }
@@ -460,7 +436,7 @@ printModelCLP <- function(lp, prefix = "CLPmodel") {
 
     invisible(
         .Call("printModel", PACKAGE = "clpAPI",
-              lp,
+              clpPointer(lp),
               as.character(prefix)
         )
     )
@@ -474,7 +450,7 @@ setLogLevelCLP <- function(lp, amount) {
 
     invisible(
         .Call("setLogLevel", PACKAGE = "clpAPI",
-              lp,
+              clpPointer(lp),
               as.integer(amount)
         )
     )
@@ -487,8 +463,8 @@ setLogLevelCLP <- function(lp, amount) {
 getLogLevelCLP <- function(lp) {
 
     amount <- .Call("getLogLevel", PACKAGE = "clpAPI",
-                   lp
-                  )
+                    clpPointer(lp)
+                   )
     return(amount)
 
 }
@@ -500,7 +476,7 @@ scaleModelCLP <- function(lp, mode) {
 
     invisible(
         .Call("scaleModel", PACKAGE = "clpAPI",
-              lp,
+              clpPointer(lp),
               as.integer(mode)
         )
     )
@@ -513,8 +489,8 @@ scaleModelCLP <- function(lp, mode) {
 getScaleFlagCLP <- function(lp) {
 
     flag <- .Call("getScaleFlag", PACKAGE = "clpAPI",
-                   lp
-                  )
+                  clpPointer(lp)
+                 )
     return(flag)
 
 }
@@ -525,8 +501,8 @@ getScaleFlagCLP <- function(lp) {
 solveInitialCLP <- function(lp) {
 
     ret <- .Call("solveInitial", PACKAGE = "clpAPI",
-                   lp
-                  )
+                 clpPointer(lp)
+                )
     return(ret)
 
 }
@@ -537,8 +513,8 @@ solveInitialCLP <- function(lp) {
 solveInitialDualCLP <- function(lp) {
 
     ret <- .Call("solveInitialDual", PACKAGE = "clpAPI",
-                   lp
-                  )
+                 clpPointer(lp)
+                )
     return(ret)
 
 }
@@ -549,8 +525,8 @@ solveInitialDualCLP <- function(lp) {
 solveInitialPrimalCLP <- function(lp) {
 
     ret <- .Call("solveInitialPrimal", PACKAGE = "clpAPI",
-                   lp
-                  )
+                 clpPointer(lp)
+                )
     return(ret)
 
 }
@@ -561,8 +537,8 @@ solveInitialPrimalCLP <- function(lp) {
 solveInitialBarrierCLP <- function(lp) {
 
     ret <- .Call("solveInitialBarrier", PACKAGE = "clpAPI",
-                   lp
-                  )
+                 clpPointer(lp)
+                )
     return(ret)
 
 }
@@ -573,8 +549,8 @@ solveInitialBarrierCLP <- function(lp) {
 solveInitialBarrierNoCrossCLP <- function(lp) {
 
     ret <- .Call("solveInitialBarrierNoCross", PACKAGE = "clpAPI",
-                   lp
-                  )
+                 clpPointer(lp)
+                )
     return(ret)
 
 }
@@ -585,7 +561,7 @@ solveInitialBarrierNoCrossCLP <- function(lp) {
 dualCLP <- function(lp, ifValP = 0) {
 
     ret <- .Call("dual", PACKAGE = "clpAPI",
-                   lp,
+                   clpPointer(lp),
                    as.integer(ifValP)
                   )
     return(ret)
@@ -598,7 +574,7 @@ dualCLP <- function(lp, ifValP = 0) {
 primalCLP <- function(lp, ifValP = 0) {
 
     ret <- .Call("primal", PACKAGE = "clpAPI",
-                   lp,
+                   clpPointer(lp),
                    as.integer(ifValP)
                   )
     return(ret)
@@ -612,7 +588,7 @@ idiotCLP <- function(lp, thd = 0) {
 
     invisible(
         .Call("idiot", PACKAGE = "clpAPI",
-              lp,
+              clpPointer(lp),
               as.integer(thd)
         )
     )
@@ -625,8 +601,8 @@ idiotCLP <- function(lp, thd = 0) {
 getSolStatusCLP <- function(lp) {
 
     stat <- .Call("getSolStatus", PACKAGE = "clpAPI",
-                   lp
-                  )
+                  clpPointer(lp)
+                 )
     return(stat)
 
 }
@@ -637,8 +613,8 @@ getSolStatusCLP <- function(lp) {
 getObjValCLP <- function(lp) {
 
     obj <- .Call("getObjVal", PACKAGE = "clpAPI",
-                   lp
-                  )
+                 clpPointer(lp)
+                )
     return(obj)
 
 }
@@ -648,7 +624,7 @@ getObjValCLP <- function(lp) {
 
 getColPrimCLP <- function(lp) {
 
-    col_prim <- .Call("getColPrim", lp, PACKAGE = "clpAPI")
+    col_prim <- .Call("getColPrim", clpPointer(lp), PACKAGE = "clpAPI")
 
     return(col_prim)
 
@@ -659,7 +635,7 @@ getColPrimCLP <- function(lp) {
 
 getColDualCLP <- function(lp) {
 
-    col_dual <- .Call("getColDual", lp, PACKAGE = "clpAPI")
+    col_dual <- .Call("getColDual", clpPointer(lp), PACKAGE = "clpAPI")
 
     return(col_dual)
 
@@ -670,7 +646,7 @@ getColDualCLP <- function(lp) {
 
 getRowPrimCLP <- function(lp) {
 
-    row_prim <- .Call("getRowPrim", lp, PACKAGE = "clpAPI")
+    row_prim <- .Call("getRowPrim", clpPointer(lp), PACKAGE = "clpAPI")
 
     return(row_prim)
 
@@ -681,7 +657,7 @@ getRowPrimCLP <- function(lp) {
 
 getRowDualCLP <- function(lp) {
 
-    row_dual <- .Call("getRowDual", lp, PACKAGE = "clpAPI")
+    row_dual <- .Call("getRowDual", clpPointer(lp), PACKAGE = "clpAPI")
 
     return(row_dual)
 
@@ -694,7 +670,7 @@ delRowsCLP <- function(lp, num, i) {
 
     invisible(
         .Call("delRows", PACKAGE = "clpAPI",
-              lp,
+              clpPointer(lp),
               as.integer(num),
               as.integer(i)
         )
@@ -709,7 +685,7 @@ delColsCLP <- function(lp, num, j) {
 
     invisible(
         .Call("delCols", PACKAGE = "clpAPI",
-              lp,
+              clpPointer(lp),
               as.integer(num),
               as.integer(j)
         )
@@ -723,7 +699,7 @@ delColsCLP <- function(lp, num, j) {
 readMPSCLP <- function(lp, fname, keepNames = TRUE, ignoreErrors = FALSE) {
 
     check <- .Call("readMPS", PACKAGE = "clpAPI",
-                   lp,
+                   clpPointer(lp),
                    as.character(fname),
                    as.integer(keepNames),
                    as.integer(ignoreErrors)
@@ -738,7 +714,7 @@ readMPSCLP <- function(lp, fname, keepNames = TRUE, ignoreErrors = FALSE) {
 saveModelCLP <- function(lp, fname) {
 
     check <- .Call("saveModel", PACKAGE = "clpAPI",
-                   lp,
+                   clpPointer(lp),
                    as.character(fname)
                   )
     return(check)
@@ -751,7 +727,7 @@ saveModelCLP <- function(lp, fname) {
 restoreModelCLP <- function(lp, fname) {
 
     check <- .Call("restoreModel", PACKAGE = "clpAPI",
-                   lp,
+                   clpPointer(lp),
                    as.character(fname)
                   )
     return(check)

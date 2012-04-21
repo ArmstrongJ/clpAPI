@@ -72,4 +72,7 @@ solveInitialCLP(lp)
 getSolStatusCLP(lp)
 getObjValCLP(lp)
 getColPrimCLP(lp)
+
+# remove problem object
+delProbCLP(lp)
 }

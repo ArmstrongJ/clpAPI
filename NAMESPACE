@@ -1,6 +1,15 @@
 useDynLib(clpAPI)
 
+exportClass("clpPtr")
+
 export(
+# methods
+"clpPointer",
+"clpPtrType",
+"clpPtrType<-",
+"isNULLpointerCLP",
+"isCLPpointer",
+# function names
 addColsCLP,
 addRowsCLP,
 chgColLowerCLP,
@@ -9,8 +18,6 @@ chgObjCoefsCLP,
 chgRowLowerCLP,
 chgRowUpperCLP,
 delColsCLP,
-deleteColsCLP,
-deleteRowsCLP,
 delProbCLP,
 delRowsCLP,
 dualCLP,

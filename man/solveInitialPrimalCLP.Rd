@@ -1,5 +1,6 @@
 \name{solveInitialPrimalCLP}
 \alias{solveInitialPrimalCLP}
+\alias{Clp_initialPrimalSolve}
 
 \title{
   Solve LP Problem with the Initial Primal Simplex Method
@@ -17,7 +18,9 @@
 
 \arguments{
   \item{lp}{
-    A pointer to a COIN-OR Clp problem object.
+    An object of class \code{"\linkS4class{clpPtr}"} as returned by
+    \code{\link{initProbCLP}}. This is basically a pointer to a COIN-OR Clp
+    problem object.
   }
 }
 

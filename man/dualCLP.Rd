@@ -1,5 +1,6 @@
 \name{dualCLP}
 \alias{dualCLP}
+\alias{Clp_dual}
 
 \title{
   Solve LP Problem with the Dual Simplex Method
@@ -17,7 +18,9 @@
 
 \arguments{
   \item{lp}{
-    A pointer to a COIN-OR Clp problem object.
+    An object of class \code{"\linkS4class{clpPtr}"} as returned by
+    \code{\link{initProbCLP}}. This is basically a pointer to a COIN-OR Clp
+    problem object.
   }
   \item{ifValP}{
     An integer value.

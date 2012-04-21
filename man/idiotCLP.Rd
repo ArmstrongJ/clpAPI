@@ -1,5 +1,6 @@
 \name{idiotCLP}
 \alias{idiotCLP}
+\alias{Clp_idiot}
 
 \title{
   Solve LP Problem with the idiot Code
@@ -17,7 +18,9 @@
 
 \arguments{
   \item{lp}{
-    A pointer to a COIN-OR Clp problem object.
+    An object of class \code{"\linkS4class{clpPtr}"} as returned by
+    \code{\link{initProbCLP}}. This is basically a pointer to a COIN-OR Clp
+    problem object.
   }
   \item{thd}{
     An integer value.
