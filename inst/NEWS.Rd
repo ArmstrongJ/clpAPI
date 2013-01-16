@@ -6,6 +6,14 @@
 
 
 % ---------------------------------------------------------------------------- %
+\section{Changes in version 1.2.2 2013-01-16}{
+  \itemize{
+    \item removed old file \file{NEWS.Rd} from top level directory
+  }
+}
+
+
+% ---------------------------------------------------------------------------- %
 \section{Changes in version 1.2.1 2012-04-21}{
   \itemize{
     \item bugfix in file \file{configure.ac} when using pkg-config

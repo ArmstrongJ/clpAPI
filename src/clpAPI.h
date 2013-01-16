@@ -1,7 +1,7 @@
 /* clpAPI.h
    R interface to COIN-OR Clp.
  
-   Copyright (C) 2011 Gabriel Gelius-Dietrich, Department for Bioinformatics,
+   Copyright (C) 2011-2013 Gabriel Gelius-Dietrich, Dpt. for Bioinformatics,
    Institute for Informatics, Heinrich-Heine-University, Duesseldorf, Germany.
    All right reserved.
    Email: geliudie@uni-duesseldorf.de

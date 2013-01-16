@@ -1,4 +1,4 @@
-AC_INIT([clpAPI], [1.2.1], [geliudie@uni-duesseldorf.de])
+AC_INIT([clpAPI], [1.2.2], [geliudie@uni-duesseldorf.de])
 
 dnl # --------------------------------------------------------------------
 dnl # global (environment) variables
