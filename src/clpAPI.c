@@ -1086,4 +1086,113 @@ SEXP restoreModel(SEXP lp, SEXP fname) {
 }
 
 
+/* -------------------------------------------------------------------------- */
+/* get COIN OR Clp version */
+SEXP version() {
 
+    SEXP out = R_NilValue;
+    
+    out = Rf_mkString(CLP_VERSION);
+
+    return out;
+}
+
+
+/* -------------------------------------------------------------------------- */
+/* drop names */
+SEXP dropNames(SEXP lp) {
+
+    SEXP out = R_NilValue;
+
+    checkProb(lp);
+
+    Clp_dropNames(R_ExternalPtrAddr(lp));
+
+    return out;
+}
+
+
+/* -------------------------------------------------------------------------- */
+/* copy in names */
+SEXP copyNames(SEXP lp, SEXP cnames, SEXP rnames) {
+
+    SEXP out = R_NilValue;
+
+    int k, numcn, numrn;
+    const char **rcnames;
+    const char ** rrnames;
+
+    checkProb(lp);
+
+    numcn = Rf_length(cnames);
+    rcnames = R_Calloc(numcn, const char *);
+    for (k = 0; k < numcn; k++) {
+        rcnames[k] = CHAR(STRING_ELT(cnames, k));
+    }
+
+    numrn = Rf_length(rnames);
+    rrnames = R_Calloc(numrn, const char *);
+    for (k = 0; k < numrn; k++) {
+        rrnames[k] = CHAR(STRING_ELT(rnames, k));
+    }
+
+    Clp_copyNames(R_ExternalPtrAddr(lp), rrnames, rcnames);
+
+    if (cnames != R_NilValue) {
+        R_Free(rcnames);
+    }
+    if (rnames != R_NilValue) {
+        R_Free(rrnames);
+    }
+
+    return out;
+}
+
+
+/* -------------------------------------------------------------------------- */
+/* length of names */
+SEXP lengthNames(SEXP lp) {
+
+    SEXP out = R_NilValue;
+    int ncnames;
+
+    checkProb(lp);
+
+    ncnames = Clp_lengthNames(R_ExternalPtrAddr(lp));
+
+    out = Rf_ScalarInteger(ncnames);
+
+    return out;
+}
+
+
+/* -------------------------------------------------------------------------- */
+/* fill in row name */
+SEXP rowName(SEXP lp, SEXP i, SEXP rname) {
+
+    SEXP out = R_NilValue;
+
+    const char *rrname = CHAR(STRING_ELT(rname, 0));
+
+    checkProb(lp);
+
+    Clp_rowName(R_ExternalPtrAddr(lp), Rf_asInteger(i), (char *) rrname);
+
+    return out;
+}
+
+
+/* -------------------------------------------------------------------------- */
+/* fill in column name */
+SEXP colName(SEXP lp, SEXP j, SEXP cname) {
+
+    SEXP out = R_NilValue;
+
+    const char *rcname = CHAR(STRING_ELT(cname, 0));
+
+    checkProb(lp);
+
+    Clp_columnName(R_ExternalPtrAddr(lp), Rf_asInteger(j), (char *) rcname);
+
+    return out;
+}

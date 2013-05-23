@@ -6,6 +6,16 @@
 
 
 % ---------------------------------------------------------------------------- %
+\section{Changes in version 1.2.3 2013-05-23}{
+  \itemize{
+    \item prints the version number of COIN-OR Clp on startup
+    \item added functions \code{dropNamesCLP()}, \code{copyNamesCLP()} and
+          \code{lengthNamesCLP()}
+  }
+}
+
+
+% ---------------------------------------------------------------------------- %
 \section{Changes in version 1.2.2 2013-01-16}{
   \itemize{
     \item removed old file \file{NEWS.Rd} from top level directory

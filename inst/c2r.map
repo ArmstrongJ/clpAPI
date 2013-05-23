@@ -11,9 +11,12 @@ Clp_chgColumnUpper             <- clpAPI::chgColUpperCLP
 Clp_chgObjCoefficients         <- clpAPI::chgObjCoefsCLP
 Clp_chgRowLower                <- clpAPI::chgRowLowerCLP
 Clp_chgRowUpper                <- clpAPI::chgRowUpperCLP
+#Clp_columnName                 <- clpAPI::colNameCLP
+Clp_copyNames                  <- clpAPI::copyNamesCLP
 Clp_deleteColumns              <- clpAPI::delColsCLP
 Clp_deleteModel                <- clpAPI::delProbCLP
 Clp_deleteRows                 <- clpAPI::delRowsCLP
+Clp_dropNames                  <- clpAPI::dropNamesCLP
 Clp_dual                       <- clpAPI::dualCLP
 Clp_dualColumnSolution         <- clpAPI::getColDualCLP
 Clp_columnLower                <- clpAPI::getColLowerCLP
@@ -38,12 +41,14 @@ Clp_getVectorLengths           <- clpAPI::getVecLenCLP
 Clp_getVectorStarts            <- clpAPI::getVecStartCLP
 Clp_idiot                      <- clpAPI::idiotCLP
 Clp_newModel                   <- clpAPI::initProbCLP
+Clp_lengthNames                <- clpAPI::lengthNamesCLP
 Clp_loadProblem                <- clpAPI::loadProblemCLP
 Clp_primal                     <- clpAPI::primalCLP
 Clp_printModel                 <- clpAPI::printModelCLP
 Clp_readMps                    <- clpAPI::readMPSCLP
 Clp_resize                     <- clpAPI::resizeCLP
 Clp_restoreModel               <- clpAPI::restoreModelCLP
+#Clp_rowName                    <- clpAPI::rowNameCLP
 Clp_saveModel                  <- clpAPI::saveModelCLP
 Clp_scaling                    <- clpAPI::scaleModelCLP
 Clp_setLogLevel                <- clpAPI::setLogLevelCLP

@@ -13,7 +13,9 @@
 }
 
 \usage{
-  loadProblemCLP(lp, ncols, nrows, ia, ja, ra, lb = NULL, ub = NULL, obj_coef = NULL, rlb = NULL, rub = NULL)
+  loadProblemCLP(lp, ncols, nrows, ia, ja, ra,
+                 lb = NULL, ub = NULL, obj_coef = NULL,
+                 rlb = NULL, rub = NULL)
 }
 
 \arguments{

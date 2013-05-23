@@ -28,7 +28,10 @@
 
 .packageName <- "clpAPI"
 
-.onLoad <- function(lib, pkg) {
+.onLoad <- function(libname, pkgname) {
     .Call("initCLP", PACKAGE = "clpAPI")
 }
 
+.onAttach <- function(libname, pkgname) {
+    packageStartupMessage("using COIN OR Clp version ", versionCLP())
+}

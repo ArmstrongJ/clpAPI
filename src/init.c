@@ -83,6 +83,12 @@ static const R_CallMethodDef callMethods[] = {
     {"readMPS",                    (DL_FUNC) &readMPS,                    4},
     {"saveModel",                  (DL_FUNC) &saveModel,                  2},
     {"restoreModel",               (DL_FUNC) &restoreModel,               2},
+    {"version",                    (DL_FUNC) &version,                    0},
+    {"dropNames",                  (DL_FUNC) &dropNames,                  1},
+    {"copyNames",                  (DL_FUNC) &copyNames,                  3},
+    {"lengthNames",                (DL_FUNC) &lengthNames,                1},
+    {"rowName",                    (DL_FUNC) &rowName,                    3},
+    {"colName",                    (DL_FUNC) &colName,                    3},
     {NULL, NULL, 0}
 };
 

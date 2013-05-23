@@ -735,4 +735,81 @@ restoreModelCLP <- function(lp, fname) {
 }
 
 
+#------------------------------------------------------------------------------#
 
+versionCLP <- function() {
+
+    version <- .Call("version", PACKAGE = "clpAPI")
+    return(version)
+
+}
+
+
+#------------------------------------------------------------------------------#
+
+dropNamesCLP <- function(lp) {
+
+    invisible(
+        .Call("dropNames", PACKAGE = "clpAPI",
+              clpPointer(lp)
+        )
+    )
+
+}
+
+
+#------------------------------------------------------------------------------#
+
+copyNamesCLP <- function(lp, cnames, rnames) {
+
+    invisible(
+        .Call("copyNames", PACKAGE = "clpAPI",
+              clpPointer(lp),
+              as.character(cnames),
+              as.character(rnames)
+        )
+    )
+
+}
+
+
+#------------------------------------------------------------------------------#
+
+lengthNamesCLP <- function(lp) {
+
+    nnames <- .Call("lengthNames", PACKAGE = "clpAPI",
+                    clpPointer(lp)
+                   )
+    return(nnames)
+
+}
+
+
+#------------------------------------------------------------------------------#
+
+rowNameCLP <- function(lp, i, rname) {
+
+    invisible(
+        .Call("rowName", PACKAGE = "clpAPI",
+              clpPointer(lp),
+              as.integer(i),
+              as.character(rname)
+        )
+    )
+
+}
+
+
+#------------------------------------------------------------------------------#
+
+colNameCLP <- function(lp, j, cname) {
+
+    invisible(
+        .Call("colName", PACKAGE = "clpAPI",
+              clpPointer(lp),
+              as.integer(j),
+              as.character(cname)
+        )
+    )
+
+}

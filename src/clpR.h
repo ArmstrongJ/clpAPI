@@ -26,6 +26,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <Clp_C_Interface.h>
+#include <ClpConfig.h>
 
 
 /* avoid remapping of Rf_<function> to <function> in R header files */

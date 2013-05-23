@@ -198,4 +198,22 @@ SEXP saveModel(SEXP lp, SEXP fname);
 /* restore model from file */
 SEXP restoreModel(SEXP lp, SEXP fname);
 
+/* get COIN OR Clp version */
+SEXP version();
+
+/* drop names */
+SEXP dropNames(SEXP lp);
+
+/* copy in names */
+SEXP copyNames(SEXP lp, SEXP cnames, SEXP rnames);
+
+/* length of names */
+SEXP lengthNames(SEXP lp);
+
+/* fill in row name */
+SEXP rowName(SEXP lp, SEXP i, SEXP rname);
+
+/* fill in column name */
+SEXP colName(SEXP lp, SEXP j, SEXP cname);
+
 
