@@ -216,4 +216,6 @@ SEXP rowName(SEXP lp, SEXP i, SEXP rname);
 /* fill in column name */
 SEXP colName(SEXP lp, SEXP j, SEXP cname);
 
+/* fill in problem name */
+SEXP probName(SEXP lp, SEXP nc, SEXP pname);
 

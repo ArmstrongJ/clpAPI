@@ -89,6 +89,7 @@ static const R_CallMethodDef callMethods[] = {
     {"lengthNames",                (DL_FUNC) &lengthNames,                1},
     {"rowName",                    (DL_FUNC) &rowName,                    3},
     {"colName",                    (DL_FUNC) &colName,                    3},
+    {"probName",                   (DL_FUNC) &probName,                   3},
     {NULL, NULL, 0}
 };
 

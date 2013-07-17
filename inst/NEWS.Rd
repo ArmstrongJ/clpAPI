@@ -6,6 +6,14 @@
 
 
 % ---------------------------------------------------------------------------- %
+\section{Changes in version 1.2.4 2013-07-17}{
+  \itemize{
+    \item added function \code{probNameCLP()}
+  }
+}
+
+
+% ---------------------------------------------------------------------------- %
 \section{Changes in version 1.2.3 2013-05-23}{
   \itemize{
     \item prints the version number of COIN-OR Clp on startup

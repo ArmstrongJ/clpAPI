@@ -34,6 +34,7 @@ Clp_objectiveValue             <- clpAPI::getObjValCLP
 Clp_dualRowSolution            <- clpAPI::getRowDualCLP
 Clp_rowLower                   <- clpAPI::getRowLowerCLP
 Clp_primalRowSolution          <- clpAPI::getRowPrimCLP
+Clp_problemName                <- clpAPI::probNameCLP
 Clp_rowUpper                   <- clpAPI::getRowUpperCLP
 Clp_scalingFlag                <- clpAPI::getScaleFlagCLP
 Clp_status                     <- clpAPI::getSolStatusCLP

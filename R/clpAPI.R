@@ -813,3 +813,18 @@ colNameCLP <- function(lp, j, cname) {
     )
 
 }
+
+
+#------------------------------------------------------------------------------#
+
+probNameCLP <- function(lp, pname) {
+
+    invisible(
+        .Call("probName", PACKAGE = "clpAPI",
+              clpPointer(lp),
+              as.integer(nchar(pname)),
+              as.character(pname)
+        )
+    )
+
+}

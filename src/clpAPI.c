@@ -1196,3 +1196,19 @@ SEXP colName(SEXP lp, SEXP j, SEXP cname) {
 
     return out;
 }
+
+
+/* -------------------------------------------------------------------------- */
+/* fill in problem name */
+SEXP probName(SEXP lp, SEXP nc, SEXP pname) {
+
+    SEXP out = R_NilValue;
+
+    const char *rpname = CHAR(STRING_ELT(pname, 0));
+
+    checkProb(lp);
+
+    Clp_problemName(R_ExternalPtrAddr(lp), Rf_asInteger(nc), (char *) rpname);
+
+    return out;
+}
