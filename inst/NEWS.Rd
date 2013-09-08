@@ -6,6 +6,14 @@
 
 
 % ---------------------------------------------------------------------------- %
+\section{Changes in version 1.2.5 2013-09-08}{
+  \itemize{
+    \item removed argument \code{--enable-lapack} from file \file{configure.ac}
+  }
+}
+
+
+% ---------------------------------------------------------------------------- %
 \section{Changes in version 1.2.4 2013-07-17}{
   \itemize{
     \item added function \code{probNameCLP()}

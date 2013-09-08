@@ -1,4 +1,4 @@
-AC_INIT([clpAPI], [1.2.4], [geliudie@uni-duesseldorf.de])
+AC_INIT([clpAPI], [1.2.5], [geliudie@uni-duesseldorf.de])
 
 dnl # --------------------------------------------------------------------
 dnl # global (environment) variables
@@ -60,13 +60,6 @@ AC_ARG_WITH(clp-lib,
                           ),
             [CLP_LIB=$withval],
             [CLP_LIB=""])
-
-
-AC_ARG_ENABLE(lapack,
-              AC_HELP_STRING([--enable-lapack[=yes|no]],
-                             [link to liblapack and libblas [[yes]]]
-                            ),
-              [LAPACK=$enableval], [LAPACK="yes"])
 
 
 dnl # --------------------------------------------------------------------
@@ -213,10 +206,6 @@ if test [ "$ARGS_OK" = "FALSE" ] ; then
     fi
 
     PKG_LIBS="${PKG_LIBS} -lClp -lCoinUtils -lm"
-
-    if test "${LAPACK}" != "no"; then
-        PKG_LIBS="$PKG_LIBS -llapack -lblas"
-    fi
 
     ARGS_OK="TRUE"
 fi
