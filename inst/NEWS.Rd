@@ -6,6 +6,14 @@
 
 
 % ---------------------------------------------------------------------------- %
+\section{Changes in version 1.2.6 2013-10-26}{
+  \itemize{
+    \item a minor bugfix in file \file{configure.ac}
+  }
+}
+
+
+% ---------------------------------------------------------------------------- %
 \section{Changes in version 1.2.5 2013-09-08}{
   \itemize{
     \item removed argument \code{--enable-lapack} from file \file{configure.ac}

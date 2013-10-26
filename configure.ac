@@ -1,4 +1,4 @@
-AC_INIT([clpAPI], [1.2.5], [geliudie@uni-duesseldorf.de])
+AC_INIT([clpAPI], [1.2.6], [geliudie@uni-duesseldorf.de])
 
 dnl # --------------------------------------------------------------------
 dnl # global (environment) variables
@@ -70,23 +70,25 @@ dnl # include and library directories
 if test [ "$ARGS_OK" = "FALSE" ] ; then
     AC_PATH_PROG([PKG_CONFIG], [pkg-config], [], [$PATH:/usr/local/bin])
 
-    if "${PKG_CONFIG}" --exists clp; then
+    if test [ "${PKG_CONFIG}" != "" ] ; then
+        if "${PKG_CONFIG}" --exists clp; then
     
-        CLP_LIBS=`${PKG_CONFIG} --libs clp`    
-        CLP_CFLAGS=`${PKG_CONFIG} --cflags clp`    
+            CLP_LIBS=`${PKG_CONFIG} --libs clp`    
+            CLP_CFLAGS=`${PKG_CONFIG} --cflags clp`    
     
-        if test [ -z "$CLP_LIBS" -a -z "$CLP_CFLAGS" ] ; then
-            AC_MSG_NOTICE([can not get information about clp from pkg-config])
+            if test [ -z "$CLP_LIBS" -a -z "$CLP_CFLAGS" ] ; then
+                AC_MSG_NOTICE([can not get information about clp from pkg-config])
+            else
+                AC_MSG_NOTICE([set compile and link flags according to pkg-config])
+                AC_MSG_NOTICE([compile flags are $CLP_CFLAGS])
+                AC_MSG_NOTICE([link flags are $CLP_LIBS])
+                PKG_LIBS="${CLP_LIBS}"
+                PKG_CPPFLAGS="${CLP_CFLAGS}"
+                ARGS_OK="TRUE"
+            fi
         else
-            AC_MSG_NOTICE([set compile and link flags according to pkg-config])
-            AC_MSG_NOTICE([compile flags are $CLP_CFLAGS])
-            AC_MSG_NOTICE([link flags are $CLP_LIBS])
-            PKG_LIBS="${CLP_LIBS}"
-            PKG_CPPFLAGS="${CLP_CFLAGS}"
-            ARGS_OK="TRUE"
+            AC_MSG_NOTICE([pkg-config file for clp is not available])
         fi
-    else
-        AC_MSG_NOTICE([pkg-config file for clp is not available])
     fi
 fi
 
