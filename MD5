@@ -1,11 +1,11 @@
-aed7f2b6574917b3d0ca688429b99065 *DESCRIPTION
+d1b81dcb8be02356a94f9e2a8270fe8c *DESCRIPTION
 5daa14e3ff7a2270d741a3e781a8f987 *NAMESPACE
 00cd81844a47cfe6b42a5b2139d64c78 *R/clp.R
 3ce8923439c8c1b6b9d5a5b73eedc8c1 *R/clpAPI.R
 9732448f604c10e494f1786df44f0a62 *R/clp_ptrClass.R
 c28b18176d42d49363a806c626389214 *R/generics.R
 b92329cf50a482f5a473bcce316e5669 *R/zzz.R
-f7372a571a1b0690bfaf3bdb7b88c829 *build/vignette.rds
+84497e4e6d40668fcd2ed3a5fe741e5b *build/vignette.rds
 661848692617a4273bc42814dec96764 *cleanup
 011ce44bdb6c566923d3f8473620a42a *configure
 c2209e4bff9ea976398c3587f4e13c38 *configure.ac
@@ -77,7 +77,7 @@ f89b721b6ec8b260fe3cdb7024932030 *man/solveInitialPrimalCLP.Rd
 5724c8b0b98b6cf1bcc15bad70f87f5a *man/status_codeCLP.Rd
 fa89b81b2935b875d4230c3e2c1c2e25 *man/versionCLP.Rd
 e4cff70c399a10f65c797ddb9bfc2f65 *src/Makevars.in
-5e18cdf60e85c6ed074a9125868cef8d *src/Makevars.win
+78ee708b1ecddfc3c86dd2a4c907dfc2 *src/Makevars.win
 80e01a59b216fbb14dd6b3b7aaa0f506 *src/clpAPI.c
 ebf775ae8f5797658db56f2e81349c14 *src/clpAPI.h
 f1ee63eab916e1506cb4af5fbcdddd5e *src/clpR.h
