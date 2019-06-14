@@ -1,4 +1,12 @@
-AC_INIT([clpAPI], [1.2.6], [geliudie@uni-duesseldorf.de])
+AC_INIT([clpAPI], [1.2.11], [mayo.roettger@hhu.de])
+
+dnl # --------------------------------------------------------------------
+dnl # template config.h.in
+dnl # --------------------------------------------------------------------
+
+AC_CONFIG_HEADERS([src/config.h])
+
+
 
 dnl # --------------------------------------------------------------------
 dnl # global (environment) variables
@@ -26,6 +34,7 @@ CFLAGS=`"${R_HOME}/bin/R" CMD config CFLAGS`
 CPPFLAGS=`"${R_HOME}/bin/R" CMD config CPPFLAGS`
 AC_PROG_CC
 AC_PROG_CPP
+
 
 
 dnl # --------------------------------------------------------------------
@@ -236,15 +245,37 @@ LIBS="${PKG_LIBS}"
 CFLAGS="${CFLAGS} ${PKG_CFLAGS}"
 CPPFLAGS="${CPPFLAGS} ${PKG_CPPFLAGS}"
 
+AC_CHECK_HEADERS([stdbool.h],,
+    AC_MSG_ERROR([Could not find stdbool.h]))
+
 AC_CHECK_HEADER([Clp_C_Interface.h],,
     AC_MSG_ERROR([Could not find Clp_C_Interface.h:
       clpAPI requires clp from http://www.coin-or.org/projects/Clp.xml
-      use --with-clp-include or CLP_INCLUDE to specify the include path.]))
-
+      use --with-clp-include or CLP_INCLUDE to specify the include path.]),
+      [#ifdef HAVE_STDBOOL_H
+      # include <stdbool.h>
+      #endif
+      ])
 
 AC_SEARCH_LIBS([Clp_newModel], [Clp], ,
     AC_MSG_ERROR([Could not link to clp:
       use --with-clp-lib or CLP_LIB to specify the lib path.]))
+
+
+
+dnl # --------------------------------------------------------------------
+dnl # check for new functions in Clp-1.17.2
+dnl # --------------------------------------------------------------------
+
+AC_SEARCH_LIBS([Clp_setRowName], [Clp], AC_DEFINE([HAVE_CLP_EXT1_17_2], [1], [defined, if extended functions are available]), AC_MSG_NOTICE([Clp extensions 1.17.2 not available]), )
+
+
+
+dnl # --------------------------------------------------------------------
+dnl # We have a config.h
+dnl # --------------------------------------------------------------------
+PKG_CPPFLAGS="-DHAVE_CONFIG_H ${PKG_CPPFLAGS}"
+
 
 
 dnl # --------------------------------------------------------------------
