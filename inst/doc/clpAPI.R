@@ -1,5 +1,4 @@
 ### R code from vignette source 'clpAPI.Rnw'
-### Encoding: UTF-8
 
 ###################################################
 ### code chunk number 1: clpAPI.Rnw:74-75
