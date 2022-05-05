@@ -244,7 +244,7 @@ SEXP getMaximumIterations(SEXP lp) {
 
     checkProb(lp);
 
-    iterations = maximumIterations(R_ExternalPtrAddr(lp));
+    iterations = Clp_maximumIterations(R_ExternalPtrAddr(lp));
 
     out = Rf_ScalarInteger(iterations);
 

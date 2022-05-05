@@ -1,2 +1,61 @@
-PKG_CPPFLAGS=-g -D_R_=1 -DUSE_R=1 -I${CLP_PATH}/include/coin
-PKG_LIBS=-L${CLP_PATH}/lib/coin -L${CLP_PATH}/lib -lClp -lCoinUtils -lstdc++ -lz
+# This Makevars script actually builds the COIN-OR Clp libraries from
+# source using the "coinbrew" script, installing them after build.
+#
+# These instructions are tested with RTools 4.2 for Windows.
+
+PKG_CPPFLAGS=-g -D_R_=1 -DUSE_R=1 -Ilibs/dist/include/coin-or
+PKG_LIBS=-Llibs/dist/lib -lClpSolver -lClp -lOsiClp -lOsi -lCoinUtils
+
+# Specifies the branch of Clp to build (only tested with master)
+CLP_RELEASE=master
+
+# Number of build threads to use (4 is probably safe in modern times)
+CLP_BUILD_THREADS=4
+
+# wget is necessary when using 1.17 and related libs
+WGET_EXISTS:=$(shell command -v wget 2>/dev/null)
+
+# Need pkg-config for modern Clp@master
+PKGCONFIG_EXISTS:=$(shell command -v pkg-config 2>/dev/null)
+
+# Additional DLLs built by coinbrew are necessary to be copied
+all: $(SHLIB) libClp-0.dll libOsi-0.dll libCoinUtils-0.dll libOsiClp-0.dll libOsiCommonTest-0.dll
+
+# Do not attempt building the clpAPI source files until coinbrew completes
+clpAPI.o: libs/dist/include/coin-or/Clp_C_Interface.h
+
+# Convenience target for testing
+coinbrew_libs: libs/dist/include/coin-or/Clp_C_Interface.h
+
+libs/dist/include/coin-or/Clp_C_Interface.h: libs/coinbrew
+ifndef WGET_EXISTS
+	pacman -Syy
+	yes | pacman -S wget
+endif
+ifndef PKGCONFIG_EXISTS
+	pacman -Syy
+	yes | pacman -S pkg-config
+endif
+	(cd libs; \
+	./coinbrew -p dist -b build -j ${CLP_BUILD_THREADS} build Clp@${CLP_RELEASE})
+
+
+# The following DLL targets deploy the DLLs build by coinbrew to the
+# parent "src" directory so that they will be properly deployed by
+# the R build process.  They all depend on the Clp C API header file
+# just to ensure that coinbrew completes its work.
+libClp-0.dll: libs/dist/include/coin-or/Clp_C_Interface.h
+	cp libs/dist/bin/$@ $@
+
+libOsi-0.dll: libs/dist/include/coin-or/Clp_C_Interface.h
+	cp libs/dist/bin/$@ $@
+
+libCoinUtils-0.dll: libs/dist/include/coin-or/Clp_C_Interface.h
+	cp libs/dist/bin/$@ $@
+
+libOsiClp-0.dll: libs/dist/include/coin-or/Clp_C_Interface.h
+	cp libs/dist/bin/$@ $@
+	
+libOsiCommonTest-0.dll: libs/dist/include/coin-or/Clp_C_Interface.h
+	cp libs/dist/bin/$@ $@
+
