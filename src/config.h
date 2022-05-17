@@ -4,17 +4,20 @@
 /* defined, if extended functions are available */
 #define HAVE_CLP_EXT1_17_2 1
 
+/* defined, if Clp_modifyCoefficient is available */
+#define HAVE_CLP_MODIFYCOEFFICIENT 1
+
 /* Define to 1 if you have the <inttypes.h> header file. */
 #define HAVE_INTTYPES_H 1
-
-/* Define to 1 if you have the <memory.h> header file. */
-#define HAVE_MEMORY_H 1
 
 /* Define to 1 if you have the <stdbool.h> header file. */
 #define HAVE_STDBOOL_H 1
 
 /* Define to 1 if you have the <stdint.h> header file. */
 #define HAVE_STDINT_H 1
+
+/* Define to 1 if you have the <stdio.h> header file. */
+#define HAVE_STDIO_H 1
 
 /* Define to 1 if you have the <stdlib.h> header file. */
 #define HAVE_STDLIB_H 1
@@ -35,13 +38,13 @@
 #define HAVE_UNISTD_H 1
 
 /* Define to the address where bug reports for this package should be sent. */
-#define PACKAGE_BUGREPORT "mayo.roettger@hhu.de"
+#define PACKAGE_BUGREPORT "jeff@approximatrix.com"
 
 /* Define to the full name of this package. */
 #define PACKAGE_NAME "clpAPI"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "clpAPI 1.3.1"
+#define PACKAGE_STRING "clpAPI 1.4.0"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "clpapi"
@@ -50,7 +53,9 @@
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "1.3.1"
+#define PACKAGE_VERSION "1.4.0"
 
-/* Define to 1 if you have the ANSI C header files. */
+/* Define to 1 if all of the C90 standard headers exist (not just the ones
+   required in a freestanding environment). This macro is provided for
+   backward compatibility; new code need not use it. */
 #define STDC_HEADERS 1
