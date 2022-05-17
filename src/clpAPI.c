@@ -1363,6 +1363,11 @@ SEXP writeMps(SEXP lp, SEXP filename, SEXP formatType, SEXP numberAcross, SEXP o
 /* NEW in Clp-1.17.2 */
 /* -------------------------------------------------------------------------- */
 /* Change matrix coefficients */
+
+/* This routine can be missing on, for example, COIN-OR's distribution of 1.17.7
+ * in Homebrew.  Check this function specifically.
+ */
+#ifdef HAVE_CLP_MODIFYCOEFFICIENT
 SEXP modifyCoefficient(SEXP lp, SEXP row, SEXP column, SEXP newElement, SEXP keepZero) {
     
     SEXP out = R_NilValue;
@@ -1375,6 +1380,13 @@ SEXP modifyCoefficient(SEXP lp, SEXP row, SEXP column, SEXP newElement, SEXP kee
     
     return out;
 }
+#else
+/* dummy function */
+SEXP modifyCoefficient(SEXP lp, SEXP row, SEXP column, SEXP newElement, SEXP keepZero) {
+    SEXP out = R_NilValue;
+    return out;
+}
+#endif /* HAVE_CLP_MODIFYCOEFFICIENT */
 
 /* -------------------------------------------------------------------------- */
 /* check for functionality of new clp functions */

@@ -1,4 +1,4 @@
-AC_INIT([clpAPI],[1.3.1],[mayo.roettger@hhu.de])
+AC_INIT([clpAPI],[1.4.0],[jeff@approximatrix.com])
 
 dnl # --------------------------------------------------------------------
 dnl # template config.h.in
@@ -266,7 +266,7 @@ dnl # --------------------------------------------------------------------
 
 AC_SEARCH_LIBS([Clp_setRowName], [Clp], AC_DEFINE([HAVE_CLP_EXT1_17_2], [1], [defined, if extended functions are available]), AC_MSG_NOTICE([Clp extensions 1.17.2 not available]), )
 
-
+AC_SEARCH_LIBS([Clp_modifyCoefficient], [Clp], AC_DEFINE([HAVE_CLP_MODIFYCOEFFICIENT], [1], [defined, if Clp_modifyCoefficient is available]) )
 
 dnl # --------------------------------------------------------------------
 dnl # We have a config.h
