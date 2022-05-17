@@ -31,6 +31,11 @@
 
 static SEXP tagCLPprob;
 
+/* Fixed in 1.18 and later, but 1.17 is common */
+#if CLP_VERSION_MAJOR==1 && CLP_VERSION_MINOR < 18
+#define Clp_maximumIterations maximumIterations
+#endif
+
 
 /* -------------------------------------------------------------------------- */
 /* Finalizer                                                                  */
