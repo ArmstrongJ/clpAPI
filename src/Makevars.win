@@ -12,9 +12,6 @@ CLP_RELEASE=master
 # Number of build threads to use (4 is probably safe in modern times)
 CLP_BUILD_THREADS=4
 
-# wget is necessary when using 1.17 and related libs
-WGET_EXISTS:=$(shell command -v wget 2>/dev/null)
-
 # Need pkg-config for modern Clp@master
 PKGCONFIG_EXISTS:=$(shell command -v pkg-config 2>/dev/null)
 
@@ -28,10 +25,6 @@ clpAPI.o: libs/dist/include/coin-or/Clp_C_Interface.h
 coinbrew_libs: libs/dist/include/coin-or/Clp_C_Interface.h
 
 libs/dist/include/coin-or/Clp_C_Interface.h: libs/coinbrew
-ifndef WGET_EXISTS
-	pacman -Syy
-	yes | pacman -S wget
-endif
 ifndef PKGCONFIG_EXISTS
 	pacman -Syy
 	yes | pacman -S pkg-config
