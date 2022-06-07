@@ -20,13 +20,13 @@ jobs:
                 - {os: macos-latest, r: 'release'}
 
     steps:
-	- name: Install Ubuntu Necessities
+        - name: Install Ubuntu Necessities
           if: matrix.os == 'ubuntu-latest'
           run: |
             sudo apt-get update
             sudo apt-get install coinor-libclp-dev
 
-	- name: Install macOS Necessities
+        - name: Install macOS Necessities
           if: matrix.os == 'macos-latest'
           run: |
             brew tap coin-or-tools/coinor
