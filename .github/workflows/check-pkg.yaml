@@ -49,10 +49,6 @@ jobs:
             needs: check
             
         - uses: r-lib/actions/setup-tinytex@v2
-        
-        - name: Install additional LaTeX packages
-          run: |
-            tlmgr install mparhack babel-english
 
         - uses: r-lib/actions/check-r-package@v2
           with:

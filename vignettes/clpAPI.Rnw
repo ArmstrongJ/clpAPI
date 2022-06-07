@@ -1,22 +1,11 @@
 \documentclass{article}
-\usepackage[english]{babel}
-\usepackage[T1]{fontenc}
-\usepackage[latin1]{inputenc}
-\usepackage{textcomp,lmodern}
-\usepackage{fixltx2e,mparhack,mathdots}
 
-\usepackage{natbib}
-\usepackage{hyperref}
 \bibliographystyle{abbrvnat}
-
-\usepackage{microtype}
-
+\usepackage{hyperref}
 
 \newcommand{\Comp}[1]{\texttt{#1}}
 
 \addtolength{\skip\footins}{0.5\baselineskip}
-
-\usepackage{fnpos}
 
 
 \hypersetup{
