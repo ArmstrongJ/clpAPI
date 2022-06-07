@@ -12,8 +12,8 @@ CLP_RELEASE=master
 # Number of build threads to use (4 is probably safe in modern times)
 CLP_BUILD_THREADS=4
 
-# Need pkg-config for modern Clp@master
-PKGCONFIG_EXISTS:=$(shell command -v pkg-config 2>/dev/null)
+# Add to the pkgconfig path just to make sure it exsits
+export PKG_CONFIG_PATH=/usr/lib/pkgconfig
 
 # Additional DLLs built by coinbrew are necessary to be copied
 all: $(SHLIB) libClp-0.dll libOsi-0.dll libCoinUtils-0.dll libOsiClp-0.dll libOsiCommonTest-0.dll
@@ -25,10 +25,8 @@ clpAPI.o: libs/dist/include/coin-or/Clp_C_Interface.h
 coinbrew_libs: libs/dist/include/coin-or/Clp_C_Interface.h
 
 libs/dist/include/coin-or/Clp_C_Interface.h: libs/coinbrew
-ifndef PKGCONFIG_EXISTS
 	pacman -Syy
 	yes | pacman -S pkg-config
-endif
 	(cd libs; \
 	./coinbrew -p dist -b build -j ${CLP_BUILD_THREADS} build Clp@${CLP_RELEASE})
 
