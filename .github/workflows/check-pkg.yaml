@@ -38,6 +38,11 @@ jobs:
         - uses: actions/checkout@v2
 
         - uses: r-lib/actions/setup-r@v2
+          with: 
+            r-version: "release"
+            install-r: true
+            update-rtools: true
+            rtools-version: "42"
 
         - uses: r-lib/actions/setup-r-dependencies@v2
           with:
