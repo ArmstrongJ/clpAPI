@@ -3,7 +3,6 @@
 \usepackage[T1]{fontenc}
 \usepackage[latin1]{inputenc}
 \usepackage{textcomp,lmodern}
-\typearea[current]{last}
 \usepackage{fixltx2e,mparhack,mathdots}
 
 \usepackage{natbib}
