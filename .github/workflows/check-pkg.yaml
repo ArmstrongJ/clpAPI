@@ -33,9 +33,6 @@ jobs:
             brew install coin-or-tools/coinor/clp
             brew link --force coinutils
             brew link --force clp
-            
-
-        - uses: teatimeguest/setup-texlive-action@v2
 
         - uses: actions/checkout@v2
 
@@ -52,6 +49,10 @@ jobs:
             needs: check
             
         - uses: r-lib/actions/setup-tinytex@v2
+        
+        - name: Install additional LaTeX packages
+          run: |
+            tlmgr install scrartcl mparhack
 
         - uses: r-lib/actions/check-r-package@v2
           with:
