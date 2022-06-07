@@ -52,7 +52,7 @@ jobs:
         
         - name: Install additional LaTeX packages
           run: |
-            tlmgr install scrartcl mparhack
+            tlmgr install mparhack
 
         - uses: r-lib/actions/check-r-package@v2
           with:
