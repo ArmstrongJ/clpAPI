@@ -24,8 +24,8 @@ jobs:
           if: matrix.config.os == 'ubuntu-latest'
           run: |
             sudo apt-get update
-            sudo apt-get install coinor-libclp-dev texinfo
-            
+            sudo apt-get install coinor-libclp-dev texinfo 
+
         - name: Install macOS Necessities
           if: matrix.config.os == 'macos-latest'
           run: |
@@ -33,10 +33,9 @@ jobs:
             brew install coin-or-tools/coinor/clp
             brew link --force coinutils
             brew link --force clp
+            
 
         - uses: teatimeguest/setup-texlive-action@v2
-          with:
-            packages: mparhack
 
         - uses: actions/checkout@v2
 
@@ -51,6 +50,8 @@ jobs:
           with:
             extra-packages: any::rcmdcheck
             needs: check
+            
+        - uses: r-lib/actions/setup-tinytex@v2
 
         - uses: r-lib/actions/check-r-package@v2
           with:
