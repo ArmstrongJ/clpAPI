@@ -104,8 +104,10 @@ process within RStudio is somewhat more automated:
 
 Again, the process of building clpAPI can be long depending on the specific
 computer being used.  At the conclusion of the build, there should be a zip
-file name *clpAPI_1.4.0.zip* in the project's parent directory.
+file named *clpAPI_1.4.0.zip* in the project's parent directory.
 
 ---
+
 *Jeff Armstrong <jeff@approximatrix.com>*
+
 *September 20, 2022*
