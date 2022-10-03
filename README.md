@@ -66,15 +66,8 @@ is installed, the user can open a terminal and install Clp with the following
 commands:
 
 ```
-brew tap coin-or-tools/coinor
-brew install coin-or-tools/coinor/clp
-brew link --force coinutils
-brew link --force clp
+brew install clp
 ```
-
-The *link* commands are necessary because some COIN-OR Clp and CoinUtils files
-conflict with core Homebrew packages.  However, it should be safe in most cases
-to force linking regardless.
 
 Once the necessary COIN-OR packages are installed, clpAPI can be built and
 installed with the command from within a macOS terminal:

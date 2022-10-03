@@ -29,10 +29,7 @@ jobs:
         - name: Install macOS Necessities
           if: matrix.config.os == 'macos-latest'
           run: |
-            brew tap coin-or-tools/coinor
-            brew install coin-or-tools/coinor/clp
-            brew link --force coinutils
-            brew link --force clp
+            brew install clp
 
         - uses: actions/checkout@v2
 
