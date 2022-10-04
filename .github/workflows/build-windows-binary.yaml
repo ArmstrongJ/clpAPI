@@ -34,10 +34,10 @@ jobs:
         - name: Build Binary Package
           shell: cmd
           run: |
-            R CMD INSTALL --build --preclean clpAPI
+            R CMD INSTALL --build --preclean .
             
         - name: Upload
           uses: actions/upload-artifact@v3
           with:
             name: Windows Binary Package
-            path: ${{ github.workspace }}/*.zip
+            path: ${{ github.workspace }}/clpAPI*.zip
