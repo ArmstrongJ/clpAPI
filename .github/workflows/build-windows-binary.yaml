@@ -32,6 +32,7 @@ jobs:
             tlmgr install scrartcl mparhack
         
         - name: Build Binary Package
+          shell: cmd
           run: |
             R CMD INSTALL --build --preclean clpAPI
             
