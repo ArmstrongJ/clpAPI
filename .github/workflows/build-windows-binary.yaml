@@ -36,8 +36,17 @@ jobs:
           run: |
             R CMD INSTALL --build --preclean .
             
+        - name: Expand Package for Upload
+          run: |
+            mkdir ${{ github.workspace }}/tmp
+            Expand-Archive -Path ${{ github.workspace }}/clpAPI_*.zip -DestinationPath ${{ github.workspace }}/tmp
+            
+        - name: Get Artifact Name from Package
+          id: get_filename
+          run: Get-ChildItem clpAPI_*.zip | Select-Object -Expand Name
+            
         - name: Upload
           uses: actions/upload-artifact@v3
           with:
-            name: Windows Binary Package
-            path: ${{ github.workspace }}/clpAPI*.zip
+            name: ${{join(steps.get_filename.outputs.*, ' ')}}
+            path: ${{ github.workspace }}/tmp/clpAPI
