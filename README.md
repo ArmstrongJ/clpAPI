@@ -1,6 +1,9 @@
 clpAPI
 ======
 
+[![Valid R Package Checks](https://github.com/ArmstrongJ/clpAPI/actions/workflows/check-pkg.yaml/badge.svg)](https://github.com/ArmstrongJ/clpAPI/actions/workflows/check-pkg.yaml)
+[![Windows Binary Package Builder](https://github.com/ArmstrongJ/clpAPI/actions/workflows/build-windows-binary.yaml/badge.svg)](https://github.com/ArmstrongJ/clpAPI/actions/workflows/build-windows-binary.yaml)
+
 R Interface to C API of COIN-OR Clp, depends on COIN-OR Clp Version >= 1.12.0
 
 ## Building

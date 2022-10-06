@@ -4,6 +4,7 @@ on:
   pull_request:
     branches: [main, master]
 
+name: Windows Binary Package Build
 
 jobs:
   R-windows-binary:
