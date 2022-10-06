@@ -43,10 +43,10 @@ jobs:
             
         - name: Get Artifact Name from Package
           id: get_filename
-          run: echo "::set-output name=filename::$(Get-ChildItem *.zip | Select-Object -Expand Name)"
+          run: echo "::set-output name=filename::$(Get-ChildItem *.zip | Select-Object -Expand BaseName)"
             
         - name: Upload
           uses: actions/upload-artifact@v3
           with:
             name: ${{ steps.get_filename.outputs.filename }}
-            path: ${{ github.workspace }}/tmp/clpAPI
+            path: ${{ github.workspace }}/tmp
