@@ -15,6 +15,9 @@ CLP_BUILD_THREADS=4
 # Add to the pkgconfig path just to make sure it exsits
 export PKG_CONFIG_PATH=/usr/lib/pkgconfig
 
+# Make sure git is installed
+GIT_EXISTS=$(shell type git 2> /dev/null)
+
 # Additional DLLs built by coinbrew are necessary to be copied
 all: $(SHLIB) libClp-0.dll libOsi-0.dll libCoinUtils-0.dll libOsiClp-0.dll libOsiCommonTest-0.dll
 
@@ -27,6 +30,9 @@ coinbrew_libs: libs/dist/include/coin-or/Clp_C_Interface.h
 libs/dist/include/coin-or/Clp_C_Interface.h: libs/coinbrew
 	pacman -Syy
 	yes | pacman -S pkg-config
+ifndef GIT_EXISTS 
+	yes | pacman -S git
+endif
 	(cd libs; \
 	./coinbrew -p dist -b build -j ${CLP_BUILD_THREADS} build Clp@${CLP_RELEASE})
 
