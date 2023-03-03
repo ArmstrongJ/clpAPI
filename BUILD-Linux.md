@@ -9,15 +9,9 @@ is outlined below for most every Linux distribution.
 For simplicity, the process of installing R itself and the distribution's C,
 C++, and various development utilities is left to the user.
 
-## (Optional) Acquiring RStudio
-
-RStudio can be used to either build a binary package of or locally install 
-clpAPI.  RStudio for most Linux distributions can be downloaded from:
-
-https://www.rstudio.com/products/rstudio/download/
-
-Users should also check their system's package manager for versions of
-RStudio that can be installed from repositories.
+If you haven't installed R itself yet, you may want to skip to the *Addendum*
+at the end of this document.  It discusses installing other necessary and
+optional packages.
 
 ## Acquiring COIN-OR Clp
 
@@ -165,8 +159,71 @@ prohibitively complicated.  Users really should build clpAPI for their system
 from source each time due to C and C++ runtime dependencies, architecture
 differences, etc.  
 
+## Addendum - Installing Necessary Tools
+
+Building and installing clpAPI requires a few necessary tools, and things
+might be easier with some optional tools.  The following sections discuss
+some additional steps that fall outside the scope of clpAPI.
+
+When installing packages, users can either rely on a distribution's 
+graphical tools or, alternatively, command line tools.  For example, two
+common methods would be:
+
+* Debian, Ubuntu, and derivatives: **sudo apt install <package name>**
+* Fedora, and derivatives: **sudo dnf install <package name>**
+
+Where *<package name>* can be replaced by the packages mentioned below.
+
+### Necessity - R
+
+Users will obviously need R installed to use clpAPI.  This package can be
+found quickly on the following operating systems:
+
+* Debian, Ubuntu, and derivatives: **r-base**
+* Fedora, Red Hat, and derivatives: **R**
+
+Other distributions will package R; it may just be named something unexpected.
+
+One important note, however is that clpAPI requires R 4.2 or higher due to 
+Windows build requirements, which may mean you'll need a newer version of R
+than the default package.  Luckily, the R Project does supply instructions
+for most major distributions at:
+
+https://cloud.r-project.org/banner.shtml
+
+The R Project provides a PPA for Ubuntu, notably.  Click on your listed Linux
+distribution for the proper instructions.
+
+### Necessity - C Compiler and Build Utilities
+
+This package also needs a functioning C compiler and related build utilites.
+There is a possibility that a clean Linux install doesn't have these installed
+out-of-the-box, so the user might have to obtain them as well.  Installing
+these necessities should be as easy as installing these packages on common
+Linux distros:
+
+* Debian, Ubuntu, and derivatives: **build-essential**
+* Fedora, Red Hat, and derivatives: **make**, **gcc**, and **automake**
+
+### Optional - Git
+
+Git is mentioned as a common way to obtain clpAPI throughout the instructions.
+That package is known as **git** on almost every modern platform.
+
+### Optional - RStudio
+
+RStudio can be used to either build a binary package of or locally install 
+clpAPI.  RStudio for most Linux distributions can be downloaded from:
+
+https://www.rstudio.com/products/rstudio/download/
+
+Users should also check their system's package manager for versions of
+RStudio that can be installed from repositories.
+
 ---
 
 *Jeff Armstrong <jeff@approximatrix.com>*
 
 *September 27, 2022*
+
+*Revised March 3, 2023* - Addendum discussing support packages
