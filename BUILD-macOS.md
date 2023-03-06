@@ -21,10 +21,13 @@ run the following commands before getting started with installing Clp:
 ```
 brew update
 brew upgrade
+brew install pkg-config
 ```
 
 These commands simply ensure that Homebrew and any software that it installed
-is up to date.
+is up to date.  The final command installs *pkg-config*, a utility upon which
+this package relies for determining the proper compiler flags.  
+
 
 ## Acquiring COIN-OR Clp
 

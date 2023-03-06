@@ -30,7 +30,7 @@ jobs:
         - name: Install macOS Necessities
           if: matrix.config.os == 'macos-latest'
           run: |
-            brew install clp
+            brew install clp pkg-config
 
         - uses: actions/checkout@v2
 
