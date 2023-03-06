@@ -187,6 +187,13 @@ if test [ "$ARGS_OK" = "FALSE" ] ; then
                 if test [ -d "$prefix/include/coin" ] ; then
                     PKG_CPPFLAGS="$PKG_CPPFLAGS -I$prefix/include/coin"
                 fi
+                
+                if test [ -d "$prefix/include/clp/coin" ] ; then
+                    PKG_CPPFLAGS="$PKG_CPPFLAGS -I$prefix/include/clp/coin"
+                    if test [ -d "$prefix/include/coinutils/coin" ] ; then
+                        PKG_CPPFLAGS="$PKG_CPPFLAGS -I$prefix/include/coinutils/coin"
+                    fi
+                fi
             else
                 AC_MSG_ERROR([directory $prefix/include does not exist])
             fi
