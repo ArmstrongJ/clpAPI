@@ -89,7 +89,13 @@ clpAPI build process will not be able to locate the Clp and related COIN-OR
 libraries.  If installed from the macOS terminal, though, the clpAPI package will
 be available from any R environment, including within RStudio.
 
+## Installing on Windows
 
+A binary package is provided via GitHub Actions whenever a release is tagged.  Under 
+the Releases heading, the latest version can be clicked, and a binary Zip file for
+Windows can be downloaded.  Alternatively, a direct URL can be used in R to install 
+the binary package, such as the following for release 1.4.1:
 
-
-
+```
+install.packages("https://github.com/ArmstrongJ/clpAPI/releases/download/1.4.1/clpAPI_1.4.1.zip", type="win.binary", repos=NULL)
+```
