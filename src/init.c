@@ -54,6 +54,7 @@ static const R_CallMethodDef callMethods[] = {
     {"getColUpper",                (DL_FUNC) &getColUpper,                1},
     {"loadProblem",                (DL_FUNC) &loadProblem,               11},
     {"loadMatrix",                 (DL_FUNC) &loadMatrix,                 6},
+    {"loadQuadraticObjective",     (DL_FUNC) &loadQuadraticObjective,     5},
     {"getNumNnz",                  (DL_FUNC) &getNumNnz,                  1},
     {"getVecStart",                (DL_FUNC) &getVecStart,                1},
     {"getInd",                     (DL_FUNC) &getInd,                     1},

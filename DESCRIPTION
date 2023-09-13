@@ -23,3 +23,6 @@ Maintainer: Jeffrey Armstrong <jeff@approximatrix.com>
 NeedsCompilation: yes
 Repository: CRAN
 Date/Publication: 2022-10-06 14:44:00 UTC
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3

@@ -119,6 +119,9 @@ SEXP loadProblem(SEXP lp, SEXP ncols, SEXP nrows, SEXP ia, SEXP ja, SEXP ra,
 /* load a complete Problem or at least the constraint matrix */
 SEXP loadMatrix(SEXP lp, SEXP ncols, SEXP nrows, SEXP ia, SEXP ja, SEXP ra);
 
+/* load a quadratic objective */
+SEXP loadQuadraticObjective(SEXP qp, SEXP ncols, SEXP istart, SEXP icol, SEXP relement);
+
 /* get number of non zero elements in the contraint matrix */
 SEXP getNumNnz(SEXP lp);
 
