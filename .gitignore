@@ -3,3 +3,4 @@
 *.a
 
 .Rproj.user
+.DS_store

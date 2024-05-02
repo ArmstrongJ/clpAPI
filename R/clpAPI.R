@@ -368,6 +368,21 @@ loadMatrixCLP <- function(lp, ncols, nrows, ia, ja, ra) {
     )
 
 }
+
+#------------------------------------------------------------------------------#
+
+loadQuadraticObjectiveCLP <- function(qp, ncols, istart, icol, relement) {
+    invisible(
+        .Call("loadQuadraticObjective", PACKAGE = "clpAPI",
+              clpPointer(qp),
+              as.integer(ncols),
+              as.integer(istart),
+              as.integer(icol),
+              as.numeric(relement)
+        )
+    )
+}
+
 #------------------------------------------------------------------------------#
 
 getMaximumIterationsCLP <- function(lp) {

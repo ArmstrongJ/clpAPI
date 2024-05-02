@@ -601,6 +601,26 @@ SEXP loadMatrix(SEXP lp, SEXP ncols, SEXP nrows, SEXP ia, SEXP ja, SEXP ra) {
     return out;
 }
 
+/* -------------------------------------------------------------------------- */
+/* load a complete Problem or at least the constraint matrix */
+SEXP loadQuadraticObjective(SEXP qp, SEXP ncols, SEXP istart, SEXP icol, SEXP relement) {
+
+    SEXP out = R_NilValue;
+    
+    CoinBigIndex *pistart = INTEGER(istart);
+    int *picol = INTEGER(icol);
+    double *prelement = REAL(relement);
+    
+    checkProb(qp);
+    
+    Clp_loadQuadraticObjective(R_ExternalPtrAddr(qp), /* Clp_Simplex *model */
+                               Rf_asInteger(ncols),
+                               pistart,
+                               picol,
+                               prelement);
+
+    return out;
+}
 
 /* -------------------------------------------------------------------------- */
 /* get number of non zero elements in the contraint matrix */
