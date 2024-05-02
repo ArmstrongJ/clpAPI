@@ -3,56 +3,29 @@
 #
 # These instructions are tested with RTools 4.2 for Windows.
 
-PKG_CPPFLAGS=-g -D_R_=1 -DUSE_R=1 -Ilibs/dist/include/coin-or
-PKG_LIBS=-Llibs/dist/lib -lClpSolver -lClp -lOsiClp -lOsi -lCoinUtils
+PKG_CPPFLAGS=-g -D_R_=1 -DUSE_R=1 -Ilibs/dist/include/coin
+PKG_LIBS=-Llibs/dist/lib -Wl,-whole-archive -lClpSolver -lClp -lOsiClp -lOsi -lCoinUtils -Wl,-no-whole-archive -lstdc++ -lbz2 -lz -lblas
 
 # Specifies the branch of Clp to build (only tested with master)
-CLP_RELEASE=master
+CLP_RELEASE=releases/1.17.9
+CLP_ARCH=x86_64
 
-# Number of build threads to use (4 is probably safe in modern times)
-CLP_BUILD_THREADS=4
-
-# Add to the pkgconfig path just to make sure it exsits
-export PKG_CONFIG_PATH=/usr/lib/pkgconfig
-
-# Make sure git is installed
-GIT_EXISTS=$(shell type git 2> /dev/null)
+CLP_ARCHIVE=Clp-$(subst /,.,$(CLP_RELEASE))-$(CLP_ARCH)-w64-mingw64.zip
+CLP_ARCHIVE_URL=https://github.com/coin-or/Clp/releases/download/$(CLP_RELEASE)/$(CLP_ARCHIVE)
 
 # Additional DLLs built by coinbrew are necessary to be copied
-all: $(SHLIB) libClp-0.dll libOsi-0.dll libCoinUtils-0.dll libOsiClp-0.dll libOsiCommonTest-0.dll
+all: $(SHLIB)
 
 # Do not attempt building the clpAPI source files until coinbrew completes
-clpAPI.o: libs/dist/include/coin-or/Clp_C_Interface.h
+clpAPI.o: libs/dist/include/coin/Clp_C_Interface.h
 
 # Convenience target for testing
-coinbrew_libs: libs/dist/include/coin-or/Clp_C_Interface.h
+coin-or-binaries: libs/dist/include/coin/Clp_C_Interface.h
 
-libs/dist/include/coin-or/Clp_C_Interface.h: libs/coinbrew
-	pacman -Syy
-	yes | pacman -S pkg-config
-ifndef GIT_EXISTS 
-	yes | pacman -S git
-endif
-	(cd libs; \
-	./coinbrew -p dist -b build -j ${CLP_BUILD_THREADS} build Clp@${CLP_RELEASE})
+libs/dist/include/coin/Clp_C_Interface.h: libs/$(CLP_ARCHIVE)
+	mkdir -p libs/dist
+	unzip -d libs/dist -ao $<
+	touch $@
 
-
-# The following DLL targets deploy the DLLs build by coinbrew to the
-# parent "src" directory so that they will be properly deployed by
-# the R build process.  They all depend on the Clp C API header file
-# just to ensure that coinbrew completes its work.
-libClp-0.dll: libs/dist/include/coin-or/Clp_C_Interface.h
-	cp libs/dist/bin/$@ $@
-
-libOsi-0.dll: libs/dist/include/coin-or/Clp_C_Interface.h
-	cp libs/dist/bin/$@ $@
-
-libCoinUtils-0.dll: libs/dist/include/coin-or/Clp_C_Interface.h
-	cp libs/dist/bin/$@ $@
-
-libOsiClp-0.dll: libs/dist/include/coin-or/Clp_C_Interface.h
-	cp libs/dist/bin/$@ $@
-	
-libOsiCommonTest-0.dll: libs/dist/include/coin-or/Clp_C_Interface.h
-	cp libs/dist/bin/$@ $@
-
+libs/$(CLP_ARCHIVE):
+	curl -L -o libs/$(CLP_ARCHIVE) $(CLP_ARCHIVE_URL)
