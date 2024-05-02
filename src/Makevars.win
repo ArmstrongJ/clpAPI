@@ -23,10 +23,10 @@ clpAPI.o: libs/dist/include/coin/Clp_C_Interface.h
 coin-or-binaries: libs/dist/include/coin/Clp_C_Interface.h
 
 libs/dist/include/coin/Clp_C_Interface.h: libs/$(CLP_ARCHIVE)
-	mkdir -p libs
 	mkdir -p libs/dist
 	unzip -d libs/dist -ao $<
 	touch $@
 
 libs/$(CLP_ARCHIVE):
+	mkdir -p libs
 	curl -L -o libs/$(CLP_ARCHIVE) $(CLP_ARCHIVE_URL)
