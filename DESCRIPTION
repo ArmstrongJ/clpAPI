@@ -1,8 +1,8 @@
 Package: clpAPI
 Type: Package
 Title: R Interface to C API of COIN-or Clp
-Version: 1.4.1
-Date: 2022-10-06
+Version: 1.4.2
+Date: 2024-05-02
 Authors@R: c(person("Mayo", "Roettger", role = "cre", email = "mayo.roettger@hhu.de"),
              person("Gabriel", "Gelius-Dietrich", role = c("aut"), email = "geliudie@uni-duesseldorf.de"),
              person(c("C.", "Jonathan"), "Fritzemeier", role = "ctb", email = "clausjonathan.fritzemeier@uni-duesseldorf.de"),
@@ -14,7 +14,7 @@ SystemRequirements: COIN-OR Clp (>= 1.12.0)
 License: GPL-3 | file LICENSE
 LazyLoad: yes
 Collate: generics.R clp_ptrClass.R clp.R clpAPI.R zzz.R
-Packaged: 2022-10-06 14:44:00 UTC; armstrongj
+Packaged: 2024-05-02 20:50:00 UTC; armstrongj
 Author: Mayo Roettger [cre],
   Gabriel Gelius-Dietrich [aut],
   C. Jonathan Fritzemeier [ctb],
@@ -22,7 +22,7 @@ Author: Mayo Roettger [cre],
 Maintainer: Jeffrey Armstrong <jeff@approximatrix.com>
 NeedsCompilation: yes
 Repository: CRAN
-Date/Publication: 2022-10-06 14:44:00 UTC
+Date/Publication: 2024-05-02 20:50:00 UTC
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
