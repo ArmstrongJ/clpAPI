@@ -18,7 +18,7 @@ jobs:
             r-version: "release"
             install-r: true
             update-rtools: true
-            rtools-version: "42"
+            rtools-version: "44"
 
         - uses: r-lib/actions/setup-r-dependencies@v2
           with:

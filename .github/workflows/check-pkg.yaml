@@ -15,7 +15,7 @@ jobs:
         fail-fast: false
         matrix:
             config:
-                - {os: windows-latest, r: 'release', rtools-version: '42'}
+                - {os: windows-latest, r: 'release', rtools-version: '44'}
                 - {os: ubuntu-latest, r: 'release'}
                 - {os: macos-latest, r: 'release'}
 
@@ -38,7 +38,7 @@ jobs:
             r-version: "release"
             install-r: true
             update-rtools: true
-            rtools-version: "42"
+            rtools-version: "44"
 
         - uses: r-lib/actions/setup-r-dependencies@v2
           with:
